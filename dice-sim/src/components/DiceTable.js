@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
-import { Table } from 'semantic-ui-react';
+import { Table, Button } from 'semantic-ui-react';
 import randomInt from '../helpers';
 
 class DiceTable extends Component {
     constructor(props){
         super();
         this.state = {
+            resultStates: [],
+            currentResultState: 0,
+            showControls: false,
             results: {},
             barMaxSize: 0,
         };
         this.resetState = this.resetState.bind(this);
         this.generateRow = this.generateRow.bind(this);
         this.setBarMaxSize = this.setBarMaxSize.bind(this);
+        this.rollAllDice = this.rollAllDice.bind(this);
+        this.setInitialResultState = this.setInitialResultState.bind(this);
+        this.populateResultStates = this.populateResultStates.bind(this);
+        this.nextState = this.nextState.bind(this);
     }
     componentDidMount(){
         this.setBarMaxSize();
@@ -26,11 +33,23 @@ class DiceTable extends Component {
         })
     }
     componentWillReceiveProps(nextProps){
-        const sides = nextProps.sides;
-        const dice = nextProps.dice;
-        const trials = nextProps.trials;
+        //first if statement is necessary so that it will not try to roll the dice
+        //  when the 'step' prop is changed
+        if(nextProps.step === this.props.step){
+            if(!nextProps.step){
+                this.rollAllDice(nextProps)
+            } else {
+                this.setInitialResultState(nextProps);
+                this.populateResultStates(nextProps);
+            }
+        }
+    }
+    rollAllDice(props){
+        const sides = props.sides;
+        const dice = props.dice;
+        const trials = props.trials;
         
-        const results = this.state.results;
+        const results = {};
         const now = Date.now();
         
         for(let die=dice; die<=sides*dice; die++){
@@ -55,12 +74,91 @@ class DiceTable extends Component {
         }
         this.setState({results});
     }
+    setInitialResultState(props){
+        const sides = props.sides;
+        const dice = props.dice;
+        const trials = props.trials;
+        const results = {};
+        for(let die=dice; die<=sides*dice; die++){
+            results[die] = { frequency: 0, die, percentage: 0};
+        }
+        this.setState({
+            sides,dice,trials,
+            currentStep: 0,
+            showControls: true,
+        });
+    }
+    populateResultStates(props){
+        const sides = props.sides;
+        const dice = props.dice;
+        const trials = props.trials;
+        const resultStates = [];
+        const currentState = {
+            results: {},
+            stepLabel: '',
+            stepNum: 0,
+            total: 0,
+            randomRoll: 0,
+        };
+        let stepNum = 0;
+        
+        for(let die=dice; die<=sides*dice; die++){
+            currentState.results[die] = { frequency: 0, die, percentage: 0};
+            console.log(currentState.results[die])
+        }
+        console.log('begin')
+        stepNum = this.addStep(resultStates,currentState,'Set initial values for each roll result to zero',0);
+        
+        for(let trial=1; trial<=trials; trial++){
+            let total=0;
+            currentState.total = 0;
+            stepNum = this.addStep(resultStates,currentState,'Set initial values each trial total to zero',stepNum);
+            
+            for(let die=1; die<=dice; die++){
+                const randomRoll = randomInt(1,sides);
+                currentState.randomRoll = randomRoll;
+                stepNum = this.addStep(resultStates,currentState,`generate random number between 1 and ${sides} for trial#${trial}: number=${randomRoll}`,stepNum);
+                total += randomRoll;
+                stepNum = this.addStep(resultStates,currentState,`add ${randomRoll} to total for trial#${trial}. Total rolled is now ${total}`,stepNum);
+            }
+            console.log(currentState.results);
+            currentState.results[total].frequency += 1;
+            stepNum = this.addStep(resultStates,currentState,`add 1 to frequency count for roll result ${total}`,stepNum);
+            
+            for(let die=dice; die<=sides*dice; die++){
+                currentState.results[die].percentage = (currentState.results[die].frequency / trial);
+            }
+            stepNum = this.addStep(resultStates,currentState,`update percentage values`,stepNum);
+        }
+        
+        this.setState({resultStates});
+    }
+    addStep(resultStates,currentState,label,stepNum){
+        console.log(`adding step with label: ${label}`);
+        console.log(currentState);
+        currentState.stepLabel = label;
+        currentState.stepNum = stepNum;
+        // currentState.results = Object.assign({},currentState.results);
+        //line after this one essentially clones the object so it is no longer
+        //  referencing a different object
+        const loggedData = JSON.parse(JSON.stringify(currentState));
+        resultStates.push(loggedData); //copies to empty obj to add
+        return stepNum + 1;
+    }
     resetState(){
         this.setState({
             results: {},
             barMaxSize: 0,
         });
     }
+    nextState(){
+        if(this.state.currentResultState >= this.state.resultStates.length) return;
+        this.setState({
+            results: this.state.resultStates[this.state.currentResultState].results,
+            currentResultState: this.state.currentResultState+1
+        });
+    }
+    
     generateRow(data){
         return (
             <Table.Row key={`result-${data.die}`}>
@@ -80,6 +178,7 @@ class DiceTable extends Component {
     }
     render(){
         return (
+            <div>
             <Table celled>
                 <Table.Header>
                     <Table.Row>
@@ -95,6 +194,9 @@ class DiceTable extends Component {
                         .map((result) => this.generateRow(result))}
                 </Table.Body>
             </Table>
+            <Button onClick={this.nextState}>next</Button>
+            {this.state.resultStates.map((result) => (<p key={result.stepNum}>{result.stepLabel}</p>))}
+            </div>
         );
     }
 }

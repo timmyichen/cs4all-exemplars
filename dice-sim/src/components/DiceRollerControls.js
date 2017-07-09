@@ -1,20 +1,35 @@
 import React, { Component } from 'react';
-import { Form, Button, Input } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
 import InputField from './InputField';
 
 class DiceRollerControls extends Component {
     constructor(props){
         super(props);
-        this.state = {
-            sides: null,
-            dice: null,
-            trials: null
-        };
+        if (props.step){
+            this.state = {sides: 1, dice: 1, trials: 1};
+        } else {
+            this.state = {
+                sides: null,
+                dice: null,
+                trials: null
+            };
+        }
         this.changeSides = this.changeSides.bind(this);
         this.changeDice = this.changeDice.bind(this);
         this.changeTrials = this.changeTrials.bind(this);
         this.handleRoll = this.handleRoll.bind(this);
         this.handleKeypress = this.handleKeypress.bind(this);
+    }
+    componentWillReceiveProps(nextProps){
+        if (nextProps.step){
+            this.setState({sides: 1, dice: 1, trials: 1})
+        } else {
+            this.setState({
+                sides: null,
+                dice: null,
+                trials: null
+            });
+        }
     }
     componentWillMount(){
         window.addEventListener('keypress',this.handleKeypress);
@@ -37,7 +52,8 @@ class DiceRollerControls extends Component {
         this.setState({trials: parseInt(event.target.value,10)})
     }
     handleRoll(){
-        if(!this.state.sides || !this.state.dice || !this.state.trials){
+        console.log('handling roll')
+        if((!this.state.sides || !this.state.dice || !this.state.trials) && !this.props.step){
             alert("At least one field is blank or zero, please try again");
             return;
         }

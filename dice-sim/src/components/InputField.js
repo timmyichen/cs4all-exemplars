@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
-import { Form, Input } from 'semantic-ui-react';
+import { Form } from 'semantic-ui-react';
 
 class InputField extends Component {
-    constructor(props){
-        super(props);
-        
-    }
     generateOptions(min,max){
         const result = [];
         for(let i=min; i<=max; i++){
             result.push(
-                <option value={i}>{i}</option>
+                <option value={i} key={i}>{i}</option>
             )
         }
         return result;
