@@ -7,6 +7,7 @@ class App extends Component {
     constructor(props){
         super();
         this.state = {
+            step: true,
             sides: 0,
             dice: 0,
             trials: 0
@@ -19,8 +20,9 @@ class App extends Component {
     render() {
         return (
             <div>
-                <DiceRollerControls submit={this.setDiceVariables} />
+                <DiceRollerControls step={this.state.step} submit={this.setDiceVariables} />
                 <DiceTable 
+                    step={this.state.step}
                     sides={this.state.sides}
                     dice={this.state.dice}
                     trials={this.state.trials}

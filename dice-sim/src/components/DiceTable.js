@@ -17,6 +17,9 @@ class DiceTable extends Component {
         this.setBarMaxSize();
         window.addEventListener('resize', this.setBarMaxSize);
     }
+    componentWillUnmount(){
+        window.removeEventListener('resize', this.setBarMaxSize);
+    }
     setBarMaxSize(){
         this.setState({
             barMaxSize: this.refs.bar.parentNode.clientWidth-25

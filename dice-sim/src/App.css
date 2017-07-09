@@ -15,3 +15,6 @@ td div.bar{
 .bar-header{
     width: auto;
 }
+.field{
+    width: 150px !important;
+}
