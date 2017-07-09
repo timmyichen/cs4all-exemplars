@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="lib/semantic.min.css" type="text/css" />
+    <link rel="stylesheet" href="lib/styles/default.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+<body>
+    <div class="ui form">
+        <div class="fields">
+            <div class="field">
+                <label># of sides</label>
+                <input type="number" placeholder="# of sides" id="num-sides" />
+            </div>
+            <div class="field">
+                <label># of die</label>
+                <input type="number" placeholder="# of die" id="num-die" />
+            </div>
+            <div class="field">
+                <label># of trials</label>
+                <input type="number" placeholder="# of trials" id="num-trials" />
+            </div>
+        </div>
+        <button class='ui button' id='do-roll'>Roll!</button>
+    </div>
+    
+    <table class='ui celled table' id='stats-table'>
+        <thead>
+            <tr>
+                <th class='text'>Result</th>
+                <th class='text'>Frequency</th>
+                <th class='text'>Probability</th>
+                <th class='text'>Percentage</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    
+    <button class='ui button' id='show-code'>Show Code</button>
+    
+    <div id='main-code' class='ui modal'>
+        <!--<code id='main-code-block' class='python'></code>-->
+        <script src="//repl.it/embed/JSYc/7.js"></script>
+    </div>
+    
+    <div id='pseudocode'>
+        <ol>
+            <li>Initialize our data (counting the results)</li>
+            <li>
+                Perform the following steps for as many trials as we entered
+                <ol>
+                    <li>Initialize our sum for this trial</li>
+                    <li>
+                        Perform the following steps for as many dice as we are rolling
+                    </li>
+                </ol>
+            </li>
+        </ol>
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/semantic.min.js"></script>
+    <script type="text/javascript" src="lib/highlight.pack.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+</body>
+</html>

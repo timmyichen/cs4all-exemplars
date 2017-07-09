@@ -1,0 +1,17 @@
+body{
+    margin: 30px;
+}
+td div.bar{
+    border: 2px solid black;
+    margin-top: 10px;
+    height: 30px;
+    background: skyblue;
+    transition: all 400ms;
+    width: 0px;
+}
+.text{
+    width: 10%;
+}
+#main-code-block{
+    white-space: pre-wrap;
+}
