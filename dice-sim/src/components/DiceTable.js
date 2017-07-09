@@ -195,7 +195,7 @@ class DiceTable extends Component {
                 </Table.Body>
             </Table>
             <Button onClick={this.nextState}>next</Button>
-            {this.state.resultStates.map((result) => (<p key={result.stepNum}>{result.stepLabel}</p>))}
+            {this.state.resultStates.map((result,index) => (<p key={result.stepNum} style={{fontWeight: this.state.currentResultState === index-1 ? 'bold' : ''}} >{result.stepLabel}</p>))}
             </div>
         );
     }
