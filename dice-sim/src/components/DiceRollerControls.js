@@ -21,14 +21,16 @@ class DiceRollerControls extends Component {
         this.handleKeypress = this.handleKeypress.bind(this);
     }
     componentWillReceiveProps(nextProps){
-        if (nextProps.step){
-            this.setState({sides: 1, dice: 1, trials: 1})
-        } else {
-            this.setState({
-                sides: null,
-                dice: null,
-                trials: null
-            });
+        if (nextProps.step !== this.props.step){
+            if (nextProps.step){
+                this.setState({sides: 1, dice: 1, trials: 1})
+            } else {
+                this.setState({
+                    sides: null,
+                    dice: null,
+                    trials: null
+                });
+            }
         }
     }
     componentWillMount(){
@@ -68,6 +70,7 @@ class DiceRollerControls extends Component {
                     <InputField step={this.props.step} label='# of trials' max='15' min='1' changeFunction={this.changeTrials} />
                 </Form.Group>
                 <Button onClick={this.handleRoll}>Roll! (Enter)</Button>
+                <Button toggle active={this.props.step} onClick={this.props.toggle}>Enable stepping (limits input values)</Button>
             </Form>
         )
     }

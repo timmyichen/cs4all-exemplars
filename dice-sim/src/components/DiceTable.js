@@ -19,6 +19,7 @@ class DiceTable extends Component {
         this.setInitialResultState = this.setInitialResultState.bind(this);
         this.populateResultStates = this.populateResultStates.bind(this);
         this.nextState = this.nextState.bind(this);
+        this.prevState = this.prevState.bind(this);
     }
     componentDidMount(){
         this.setBarMaxSize();
@@ -42,6 +43,8 @@ class DiceTable extends Component {
                 this.setInitialResultState(nextProps);
                 this.populateResultStates(nextProps);
             }
+        } else {
+            this.setState({results: {}});
         }
     }
     rollAllDice(props){
@@ -104,7 +107,6 @@ class DiceTable extends Component {
         
         for(let die=dice; die<=sides*dice; die++){
             currentState.results[die] = { frequency: 0, die, percentage: 0};
-            console.log(currentState.results[die])
         }
         console.log('begin')
         stepNum = this.addStep(resultStates,currentState,'Set initial values for each roll result to zero',0);
@@ -121,7 +123,6 @@ class DiceTable extends Component {
                 total += randomRoll;
                 stepNum = this.addStep(resultStates,currentState,`add ${randomRoll} to total for trial#${trial}. Total rolled is now ${total}`,stepNum);
             }
-            console.log(currentState.results);
             currentState.results[total].frequency += 1;
             stepNum = this.addStep(resultStates,currentState,`add 1 to frequency count for roll result ${total}`,stepNum);
             
@@ -134,8 +135,7 @@ class DiceTable extends Component {
         this.setState({resultStates});
     }
     addStep(resultStates,currentState,label,stepNum){
-        console.log(`adding step with label: ${label}`);
-        console.log(currentState);
+        // console.log(`adding step with label: ${label}`);
         currentState.stepLabel = label;
         currentState.stepNum = stepNum;
         // currentState.results = Object.assign({},currentState.results);
@@ -154,8 +154,19 @@ class DiceTable extends Component {
     nextState(){
         if(this.state.currentResultState >= this.state.resultStates.length) return;
         this.setState({
-            results: this.state.resultStates[this.state.currentResultState].results,
             currentResultState: this.state.currentResultState+1
+        })
+        this.setState({
+            results: this.state.resultStates[this.state.currentResultState].results
+        });
+    }
+    prevState(){
+        if(this.state.currentResultState <= 0) return;
+        this.setState({
+            currentResultState: this.state.currentResultState-1
+        })
+        this.setState({
+            results: this.state.resultStates[this.state.currentResultState].results
         });
     }
     
@@ -194,6 +205,7 @@ class DiceTable extends Component {
                         .map((result) => this.generateRow(result))}
                 </Table.Body>
             </Table>
+            <Button onClick={this.prevState}>prev</Button>
             <Button onClick={this.nextState}>next</Button>
             {this.state.resultStates.map((result,index) => (<p key={result.stepNum} style={{fontWeight: this.state.currentResultState-1 === index ? 'bold' : ''}} >{result.stepLabel}</p>))}
             </div>
