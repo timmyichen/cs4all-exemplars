@@ -1,0 +1,51 @@
+th.text{
+    width: 10%;
+}
+td div.bar{
+    border: 2px solid black;
+    margin-top: 10px;
+    height: 30px;
+    background: skyblue;
+    transition: all 400ms;
+    width: 0px;
+}
+.bar-header{
+    width: auto;
+}
+.field{
+    width: 150px !important;
+}
+form{
+    margin-bottom: 15px;
+}
+/*#roller{*/
+/*    width: 50%;*/
+/*}*/
+h1{
+    font-size: 40px !important;
+}
+button.wider{
+    width: 170px;
+}
+.highlight{
+    background: yellow;
+}
+#container-out{
+    display: flex;
+}
+#container-out div{
+    flex: 1;
+}
+#info-right{
+    margin: 0 50px;
+}
+.buttons{
+    display: flex;
+}
+.buttons button{
+    flex: 1;
+    align-items: stretch;
+}
+.hidden{
+    display: none;
+}

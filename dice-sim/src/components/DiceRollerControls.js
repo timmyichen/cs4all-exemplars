@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import InputField from './InputField';
+import PubSub from 'pubsub-js';
 
 class DiceRollerControls extends Component {
     constructor(props){
@@ -54,7 +55,6 @@ class DiceRollerControls extends Component {
         this.setState({trials: parseInt(event.target.value,10)})
     }
     handleRoll(){
-        console.log('handling roll')
         if((!this.state.sides || !this.state.dice || !this.state.trials) && !this.props.step){
             alert("At least one field is blank or zero, please try again");
             return;
@@ -68,9 +68,15 @@ class DiceRollerControls extends Component {
                     <InputField step={this.props.step} label='# of sides' max='6' min='1' changeFunction={this.changeSides} />
                     <InputField step={this.props.step} label='# of dice' max='3' min='1' changeFunction={this.changeDice} />
                     <InputField step={this.props.step} label='# of trials' max='15' min='1' changeFunction={this.changeTrials} />
+                    <div className='buttons'>
+                        <Button onClick={this.handleRoll}>Roll!<br/>(Enter)</Button>
+                        <Button className='wider' toggle active={this.props.step} onClick={this.props.toggle}>Enable stepping<br/>(limits inputs)</Button>
+                        <div className={this.props.step ? 'buttons' : 'buttons hidden'}>
+                            <Button onClick={()=>{PubSub.publish('prevState')}}>Previous<br/>Instruction</Button>
+                            <Button onClick={()=>{PubSub.publish('nextState')}}>Next<br/>Instruction</Button>
+                        </div>
+                    </div>
                 </Form.Group>
-                <Button onClick={this.handleRoll}>Roll! (Enter)</Button>
-                <Button toggle active={this.props.step} onClick={this.props.toggle}>Enable stepping (limits input values)</Button>
             </Form>
         )
     }

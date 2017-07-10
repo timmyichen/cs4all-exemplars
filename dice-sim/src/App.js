@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './App.css';
+import './App.css'
+import { Header } from 'semantic-ui-react';
 import DiceRollerControls from './components/DiceRollerControls';
 import DiceTable from './components/DiceTable';
 
@@ -23,7 +24,8 @@ class App extends Component {
     }
     render() {
         return (
-            <div>
+            <div id='roller'>
+                <Header as='h1'>Dice Roll Simulator</Header>
                 <DiceRollerControls 
                     step={this.state.step}
                     submit={this.setDiceVariables}

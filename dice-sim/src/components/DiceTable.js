@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { Table, Button } from 'semantic-ui-react';
 import randomInt from '../helpers';
+import Pseudocode from './Pseudocode';
+import PubSub from 'pubsub-js';
 
 class DiceTable extends Component {
     constructor(props){
         super();
         this.state = {
-            resultStates: [],
+            resultStates: [], //array containing all possible states (for stepping through)
             currentResultState: 0,
-            showControls: false,
+            showControls: false, //true when able to step through code
             results: {},
             barMaxSize: 0,
+            instructionIndex: 0,
         };
         this.resetState = this.resetState.bind(this);
         this.generateRow = this.generateRow.bind(this);
@@ -20,10 +23,15 @@ class DiceTable extends Component {
         this.populateResultStates = this.populateResultStates.bind(this);
         this.nextState = this.nextState.bind(this);
         this.prevState = this.prevState.bind(this);
+        this.addStep = this.addStep.bind(this);
     }
     componentDidMount(){
         this.setBarMaxSize();
         window.addEventListener('resize', this.setBarMaxSize);
+        
+        /* i know this isn't the best way to do this.  short term solution */
+        PubSub.subscribe('prevState',this.prevState);
+        PubSub.subscribe('nextState',this.nextState);
     }
     componentWillUnmount(){
         window.removeEventListener('resize', this.setBarMaxSize);
@@ -31,20 +39,29 @@ class DiceTable extends Component {
     setBarMaxSize(){
         this.setState({
             barMaxSize: this.refs.bar.parentNode.clientWidth-25
-        })
+        });
     }
+    /* component should receive props only in two scenarios:
+        1. when the stepping mode is changed
+            (props changed: step)
+        2. when a new set of simulation values come in
+            (props changed: sides, dice, trials) 
+        there should never be a time when both run simultaneously */ 
     componentWillReceiveProps(nextProps){
-        //first if statement is necessary so that it will not try to roll the dice
-        //  when the 'step' prop is changed
+        // initial if statement ensure rolling happens only for scenario #2
         if(nextProps.step === this.props.step){
             if(!nextProps.step){
-                this.rollAllDice(nextProps)
+                this.rollAllDice(nextProps);
             } else {
                 this.setInitialResultState(nextProps);
                 this.populateResultStates(nextProps);
             }
         } else {
-            this.setState({results: {}});
+            this.setState({
+                results: {},
+                resultStates: [],
+                showControls: !this.state.showControls,
+            });
         }
     }
     rollAllDice(props){
@@ -56,7 +73,7 @@ class DiceTable extends Component {
         const now = Date.now();
         
         for(let die=dice; die<=sides*dice; die++){
-            results[die] = { frequency: 0, die};
+            results[die] = { frequency: 0, die, percentage: 0 };
         }
         for(let trial=0; trial<trials; trial++){
             let total=0;
@@ -83,12 +100,11 @@ class DiceTable extends Component {
         const trials = props.trials;
         const results = {};
         for(let die=dice; die<=sides*dice; die++){
-            results[die] = { frequency: 0, die, percentage: 0};
+            results[die] = { frequency: 0, die, percentage: 0 };
         }
         this.setState({
             sides,dice,trials,
-            currentStep: 0,
-            showControls: true,
+            currentResultState: 0,
         });
     }
     populateResultStates(props){
@@ -109,35 +125,36 @@ class DiceTable extends Component {
             currentState.results[die] = { frequency: 0, die, percentage: 0};
         }
         console.log('begin')
-        stepNum = this.addStep(resultStates,currentState,'Set initial values for each roll result to zero',0);
+        stepNum = this.addStep(resultStates,currentState,'Set initial values for each roll result to zero',0,1);
         
         for(let trial=1; trial<=trials; trial++){
             let total=0;
             currentState.total = 0;
-            stepNum = this.addStep(resultStates,currentState,'Set initial values each trial total to zero',stepNum);
+            stepNum = this.addStep(resultStates,currentState,'Set initial values each trial total to zero',stepNum,2);
             
             for(let die=1; die<=dice; die++){
                 const randomRoll = randomInt(1,sides);
                 currentState.randomRoll = randomRoll;
-                stepNum = this.addStep(resultStates,currentState,`generate random number between 1 and ${sides} for trial#${trial}: number=${randomRoll}`,stepNum);
+                stepNum = this.addStep(resultStates,currentState,`generate random number between 1 and ${sides} for trial#${trial}: number=${randomRoll}`,stepNum,3);
                 total += randomRoll;
-                stepNum = this.addStep(resultStates,currentState,`add ${randomRoll} to total for trial#${trial}. Total rolled is now ${total}`,stepNum);
+                stepNum = this.addStep(resultStates,currentState,`add ${randomRoll} to total for trial#${trial}. Total rolled is now ${total}`,stepNum,4);
             }
             currentState.results[total].frequency += 1;
-            stepNum = this.addStep(resultStates,currentState,`add 1 to frequency count for roll result ${total}`,stepNum);
+            stepNum = this.addStep(resultStates,currentState,`add 1 to frequency count for roll result ${total}`,stepNum,5);
             
             for(let die=dice; die<=sides*dice; die++){
                 currentState.results[die].percentage = (currentState.results[die].frequency / trial);
             }
-            stepNum = this.addStep(resultStates,currentState,`update percentage values`,stepNum);
+            stepNum = this.addStep(resultStates,currentState,`update percentage values`,stepNum,6);
         }
         
         this.setState({resultStates});
     }
-    addStep(resultStates,currentState,label,stepNum){
+    addStep(resultStates,currentState,label,stepNum,instructionIndex){
         // console.log(`adding step with label: ${label}`);
         currentState.stepLabel = label;
         currentState.stepNum = stepNum;
+        currentState.instructionIndex = instructionIndex;
         // currentState.results = Object.assign({},currentState.results);
         //line after this one essentially clones the object so it is no longer
         //  referencing a different object
@@ -157,7 +174,8 @@ class DiceTable extends Component {
             currentResultState: this.state.currentResultState+1
         })
         this.setState({
-            results: this.state.resultStates[this.state.currentResultState].results
+            results: this.state.resultStates[this.state.currentResultState].results,
+            instructionIndex: this.state.resultStates[this.state.currentResultState].instructionIndex
         });
     }
     prevState(){
@@ -189,25 +207,30 @@ class DiceTable extends Component {
     }
     render(){
         return (
-            <div>
-            <Table celled>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell className='text'>Result</Table.HeaderCell>
-                        <Table.HeaderCell className='text'>Frequency</Table.HeaderCell>
-                        <Table.HeaderCell className='text'>Probability</Table.HeaderCell>
-                        <Table.HeaderCell className='text'>Percentage</Table.HeaderCell>
-                        <Table.HeaderCell className='bar-header'><div ref='bar'></div></Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {Object.values(this.state.results)
-                        .map((result) => this.generateRow(result))}
-                </Table.Body>
-            </Table>
-            <Button onClick={this.prevState}>prev</Button>
-            <Button onClick={this.nextState}>next</Button>
-            {this.state.resultStates.map((result,index) => (<p key={result.stepNum} style={{fontWeight: this.state.currentResultState-1 === index ? 'bold' : ''}} >{result.stepLabel}</p>))}
+            <div id='container-out'>
+            <div id='table-left'>
+                <Table celled>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell className='text'>Result</Table.HeaderCell>
+                            <Table.HeaderCell className='text'>Frequency</Table.HeaderCell>
+                            <Table.HeaderCell className='text'>Probability</Table.HeaderCell>
+                            <Table.HeaderCell className='text'>Percentage</Table.HeaderCell>
+                            <Table.HeaderCell className='bar-header'><div ref='bar'></div></Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {Object.values(this.state.results)
+                            .map((result) => this.generateRow(result))}
+                    </Table.Body>
+                </Table>
+                {this.state.resultStates.map((result,index) =>
+                    (<p key={result.stepNum} style={{fontWeight: this.state.currentResultState-1 === index ? 'bold' : ''}} >{result.stepLabel}</p>)
+                )}
+            </div>
+            <div id='info-right'>
+                <Pseudocode index={this.state.instructionIndex} step={this.props.step} />
+            </div>
             </div>
         );
     }

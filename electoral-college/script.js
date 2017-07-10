@@ -3,7 +3,7 @@ const map = new Datamap({
     element: document.getElementById("map"),
     geographyConfig: {
         highlightOnHover: false,
-        popupTemplate: (geography,data) => {
+        popupTemplate: function(geography,data) {
             return `
                 <div class="hoverinfo">
                     <strong>${geography.properties.name}</strong><br/>
@@ -29,6 +29,7 @@ const map = new Datamap({
         'CO': { fillKey: 'dem', votes: 9, repVote: 0.5, demVote: 0.5  },
         'CT': { fillKey: 'dem', votes: 7, repVote: 0.5, demVote: 0.5  },
         'DE': { fillKey: 'dem', votes: 3, repVote: 0.5, demVote: 0.5  },
+        'DC': { fillKey: 'dem', votes: 3, repVote: 0.5, demVote: 0.5  },
         'FL': { fillKey: 'rep', votes: 29, repVote: 0.5, demVote: 0.5  },
         'GA': { fillKey: 'rep', votes: 16, repVote: 0.5, demVote: 0.5  },
         'HI': { fillKey: 'dem', votes: 4, repVote: 0.5, demVote: 0.5  },
@@ -75,6 +76,7 @@ const map = new Datamap({
 });
 
 map.labels({'labelColor': 'white'});
+map.resize()
 
 const states = ['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI',
     'ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO',
@@ -95,8 +97,11 @@ function getFullWinner(short){
 function toggleState(state){
     const newColor = cycleColor(map.options.data[state].fillKey);
     const newData = {};
+    console.log(JSON.parse(JSON.stringify(newData)));
     newData[state] = {};
+    console.log(JSON.parse(JSON.stringify(newData)));
     newData[state].fillKey = newColor;
+    console.log(JSON.parse(JSON.stringify(newData)));
     map.updateChoropleth(newData);
     
     updateBars();
@@ -135,8 +140,8 @@ function updateBars(){
     document.querySelector('#dem-num').innerHTML = sums.dem;
 }
 
-states.forEach((state) => {
-    document.querySelector(`.${state}`).addEventListener('click',()=>{toggleState(state)});
+states.forEach(function(state) {
+    document.querySelector(`.${state}`).addEventListener('click',function(){toggleState(state)});
 });
 
 updateBars();

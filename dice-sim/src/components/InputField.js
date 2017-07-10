@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form } from 'semantic-ui-react';
 
 class InputField extends Component {
+    //generates options for <select> lists
     generateOptions(min,max){
         const result = [];
         for(let i=min; i<=max; i++){
