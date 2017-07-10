@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table, Button } from 'semantic-ui-react';
 import randomInt from '../helpers';
 import Pseudocode from './Pseudocode';
+import VariableTable from './VariableTable';
 import PubSub from 'pubsub-js';
 
 class DiceTable extends Component {
@@ -14,6 +15,7 @@ class DiceTable extends Component {
             results: {},
             barMaxSize: 0,
             instructionIndex: 0,
+            dummyObj: {trial: '', randomRoll: '', total: '', instructionIndex: ''},
         };
         this.resetState = this.resetState.bind(this);
         this.generateRow = this.generateRow.bind(this);
@@ -104,7 +106,7 @@ class DiceTable extends Component {
         }
         this.setState({
             sides,dice,trials,
-            currentResultState: 0,
+            currentResultState: 0
         });
     }
     populateResultStates(props){
@@ -118,18 +120,21 @@ class DiceTable extends Component {
             stepNum: 0,
             total: 0,
             randomRoll: 0,
+            trial: 0,
         };
         let stepNum = 0;
         
         for(let die=dice; die<=sides*dice; die++){
             currentState.results[die] = { frequency: 0, die, percentage: 0};
         }
-        console.log('begin')
+        
+        currentState.trial = 'N/A'
         stepNum = this.addStep(resultStates,currentState,'Set initial values for each roll result to zero',0,1);
         
         for(let trial=1; trial<=trials; trial++){
             let total=0;
             currentState.total = 0;
+            currentState.trial = trial;
             stepNum = this.addStep(resultStates,currentState,'Set initial values each trial total to zero',stepNum,2);
             
             for(let die=1; die<=dice; die++){
@@ -137,6 +142,7 @@ class DiceTable extends Component {
                 currentState.randomRoll = randomRoll;
                 stepNum = this.addStep(resultStates,currentState,`generate random number between 1 and ${sides} for trial#${trial}: number=${randomRoll}`,stepNum,3);
                 total += randomRoll;
+                currentState.total = total;
                 stepNum = this.addStep(resultStates,currentState,`add ${randomRoll} to total for trial#${trial}. Total rolled is now ${total}`,stepNum,4);
             }
             currentState.results[total].frequency += 1;
@@ -145,7 +151,7 @@ class DiceTable extends Component {
             for(let die=dice; die<=sides*dice; die++){
                 currentState.results[die].percentage = (currentState.results[die].frequency / trial);
             }
-            stepNum = this.addStep(resultStates,currentState,`update percentage values`,stepNum,6);
+            // stepNum = this.addStep(resultStates,currentState,`update percentage values`,stepNum,6);
         }
         
         this.setState({resultStates});
@@ -174,8 +180,7 @@ class DiceTable extends Component {
             currentResultState: this.state.currentResultState+1
         })
         this.setState({
-            results: this.state.resultStates[this.state.currentResultState].results,
-            instructionIndex: this.state.resultStates[this.state.currentResultState].instructionIndex
+            results: this.state.resultStates[this.state.currentResultState].results
         });
     }
     prevState(){
@@ -229,7 +234,15 @@ class DiceTable extends Component {
                 )}
             </div>
             <div id='info-right'>
-                <Pseudocode index={this.state.instructionIndex} step={this.props.step} />
+                <VariableTable
+                    step={this.props.step}
+                    trials={this.props.trials}
+                    data={this.state.resultStates[this.state.currentResultState-1] || this.state.dummyObj}
+                />
+                <Pseudocode 
+                    resultState={this.state.resultStates[this.state.currentResultState-1] || ''}
+                    step={this.props.step}
+                />
             </div>
             </div>
         );
