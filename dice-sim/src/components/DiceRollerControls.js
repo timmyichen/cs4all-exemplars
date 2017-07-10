@@ -24,7 +24,7 @@ class DiceRollerControls extends Component {
     componentWillReceiveProps(nextProps){
         if (nextProps.step !== this.props.step){
             if (nextProps.step){
-                this.setState({sides: 1, dice: 1, trials: 1})
+                this.setState({sides: 1, dice: 1, trials: 1});
             } else {
                 this.setState({
                     sides: null,
@@ -46,13 +46,13 @@ class DiceRollerControls extends Component {
         }
     }
     changeSides(event){
-        this.setState({sides: parseInt(event.target.value,10)})
+        this.setState({sides: parseInt(event.target.value,10)});
     }
     changeDice(event){
-        this.setState({dice: parseInt(event.target.value,10)})
+        this.setState({dice: parseInt(event.target.value,10)});
     }
     changeTrials(event){
-        this.setState({trials: parseInt(event.target.value,10)})
+        this.setState({trials: parseInt(event.target.value,10)});
     }
     handleRoll(){
         if((!this.state.sides || !this.state.dice || !this.state.trials) && !this.props.step){
@@ -78,7 +78,7 @@ class DiceRollerControls extends Component {
                     </div>
                 </Form.Group>
             </Form>
-        )
+        );
     }
 }
 

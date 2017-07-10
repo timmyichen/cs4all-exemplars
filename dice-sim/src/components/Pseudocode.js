@@ -25,7 +25,7 @@ class Pseudocode extends Component {
                     </List.List></List.Item>
                 </List>
             </div>
-        )
+        );
     }
 }
 

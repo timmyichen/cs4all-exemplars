@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css'
+import './App.css';
 import { Header } from 'semantic-ui-react';
 import DiceRollerControls from './components/DiceRollerControls';
 import DiceTable from './components/DiceTable';
@@ -20,7 +20,7 @@ class App extends Component {
         this.setState(inputs);
     }
     toggleStepMode(){
-        this.setState({ step: !this.state.step })
+        this.setState({ step: !this.state.step });
     }
     render() {
         return (

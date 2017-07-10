@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 import randomInt from '../helpers';
 import Pseudocode from './Pseudocode';
 import VariableTable from './VariableTable';
@@ -128,7 +128,7 @@ class DiceTable extends Component {
             currentState.results[die] = { frequency: 0, die, percentage: 0};
         }
         
-        currentState.trial = 'N/A'
+        currentState.trial = 'N/A';
         stepNum = this.addStep(resultStates,currentState,'Set initial values for each roll result to zero',0,1);
         
         for(let trial=1; trial<=trials; trial++){
@@ -178,7 +178,7 @@ class DiceTable extends Component {
         if(this.state.currentResultState >= this.state.resultStates.length) return;
         this.setState({
             currentResultState: this.state.currentResultState+1
-        })
+        });
         this.setState({
             results: this.state.resultStates[this.state.currentResultState].results
         });
@@ -187,7 +187,7 @@ class DiceTable extends Component {
         if(this.state.currentResultState <= 0) return;
         this.setState({
             currentResultState: this.state.currentResultState-1
-        })
+        });
         this.setState({
             results: this.state.resultStates[this.state.currentResultState].results
         });
@@ -208,7 +208,7 @@ class DiceTable extends Component {
                     </div>
                 </Table.Cell>
             </Table.Row>
-        )
+        );
     }
     render(){
         return (
