@@ -3,12 +3,14 @@ const map = new Datamap({
     element: document.getElementById("map"),
     geographyConfig: {
         highlightOnHover: false,
+        borderColor: 'black',
         popupTemplate: function(geography,data) {
             return `
                 <div class="hoverinfo">
                     <strong>${geography.properties.name}</strong><br/>
                     Winner: ${getFullWinner(data.fillKey)}<br/>
-                    Electoral Votes: ${data.votes}
+                    Electoral Votes: ${data.votes}<br/>
+                    2016 Voters: ${data.popVote}
                 </div>
             `
         }
@@ -17,8 +19,8 @@ const map = new Datamap({
     fills: {
         defaultFill: '#AAAAAA',
         neutral: '#AAAAAA',
-        rep: '#E91D0E',
-        dem: '#232066'
+        rep: '#ED1C24', //'#E91D0E',
+        dem: '#1E90FF', //'#232066'
     },
     data: {
         'AL': { fillKey: 'rep', votes: 9, repVote: 0.5, demVote: 0.5, popVote: 2123372  },
@@ -36,7 +38,7 @@ const map = new Datamap({
         'ID': { fillKey: 'rep', votes: 4, repVote: 0.5, demVote: 0.5, popVote: 690433  },
         'IL': { fillKey: 'dem', votes: 20, repVote: 0.5, demVote: 0.5, popVote: 5594825  },
         'IN': { fillKey: 'rep', votes: 11, repVote: 0.5, demVote: 0.5, popVote: 2757965  },
-        'IA': { fillKey: 'rep', votes: 6, repVote: 0.5, demVote: 0.5, popVote: 1577031  },
+        'IA': { fillKey: 'rep', votes: 6, repVote: 0.5, demVote: 0.5, popVote: 1566031  },
         'KS': { fillKey: 'rep', votes: 6, repVote: 0.5, demVote: 0.5, popVote: 1194755  },
         'KY': { fillKey: 'rep', votes: 8, repVote: 0.5, demVote: 0.5, popVote: 1924150  },
         'LA': { fillKey: 'rep', votes: 8, repVote: 0.5, demVote: 0.5, popVote: 2029032  },
@@ -75,7 +77,7 @@ const map = new Datamap({
     }
 });
 
-map.labels({'labelColor': 'white'});
+map.labels({'labelColor': 'black'});
 map.resize()
 
 const states = ['AL','AK','AZ','AR','CA','CO','CT','DE', 'DC', 'FL','GA','HI',
@@ -97,14 +99,12 @@ function getFullWinner(short){
 function toggleState(state){
     const newColor = cycleColor(map.options.data[state].fillKey);
     const newData = {};
-    console.log(JSON.parse(JSON.stringify(newData)));
     newData[state] = {};
-    console.log(JSON.parse(JSON.stringify(newData)));
     newData[state].fillKey = newColor;
-    console.log(JSON.parse(JSON.stringify(newData)));
     map.updateChoropleth(newData);
     
-    updateBars();
+    updateElectoralBar();
+    updatePopularBar()
 }
 
 function cycleColor(color){
@@ -112,7 +112,7 @@ function cycleColor(color){
     return colors[(colors.indexOf(color)+1)%3];
 }
 
-function updateBars(){
+function updateElectoralBar(){
     const sums = {
         rep: 0,
         dem: 0,
@@ -133,15 +133,45 @@ function updateBars(){
     }
     
     for(const party in sums){
-        document.querySelector(`#${party}`).style.width = `${sums[party]*2}px`;
+        document.querySelector(`#electoral-bar .${party}`).style.width = `${sums[party]*2}px`;
     }
     
-    document.querySelector('#rep-num').innerHTML = sums.rep;
-    document.querySelector('#dem-num').innerHTML = sums.dem;
+    document.querySelector('#electoral-bar .rep-num').innerHTML = sums.rep;
+    document.querySelector('#electoral-bar .dem-num').innerHTML = sums.dem;
 }
+
+function updatePopularBar(){
+    const sums = {
+        rep: 0,
+        dem: 0,
+        neutral: 0
+    };
+    for(const state in map.options.data){
+        switch(map.options.data[state].fillKey){
+            case 'rep':
+                sums.rep += map.options.data[state].popVote;
+                break;
+            case 'dem':
+                sums.dem += map.options.data[state].popVote;
+                break;
+            case 'neutral':
+                sums.neutral += map.options.data[state].popVote;
+                break;
+        }
+    }
+    
+    for(const party in sums){
+        document.querySelector(`#popular-bar .${party}`).style.width = `${sums[party]/(63720*2)}px`;
+    }
+    
+    document.querySelector('#popular-bar .rep-num').innerHTML = Math.round(sums.rep * 0.5);
+    document.querySelector('#popular-bar .dem-num').innerHTML = Math.round(sums.dem * 0.5);
+}
+
 
 states.forEach(function(state) {
     document.querySelector(`.${state}`).addEventListener('click',function(){toggleState(state)});
 });
 
-updateBars();
+updateElectoralBar();
+updatePopularBar()

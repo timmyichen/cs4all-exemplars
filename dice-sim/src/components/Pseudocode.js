@@ -11,8 +11,8 @@ class Pseudocode extends Component {
     }
     render(){
         return (
-            <div  className={this.props.step ? '' : 'hidden'}>
-                <p className='highlight'>Highlighted text indicates a command that was <em>just</em> completed</p>
+            <div className={this.props.step ? '' : 'hidden'}>
+                <p className='highlight'>Highlighted text indicates the step that was <em>just</em> completed</p>
                 <List bulleted>
                     <List.Item className={this.getClass(1)}>Set initial values for each roll result to zero</List.Item>
                     <List.Item>Repeat the following steps for each trial:<List.List>

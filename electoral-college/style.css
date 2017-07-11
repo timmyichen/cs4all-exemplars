@@ -1,5 +1,5 @@
 body{
-    background: black;
+    background: #D3D3D3;
 }
 
 #map{
@@ -7,7 +7,7 @@ body{
     width: 700px;
     position: relative;
 }
-#bars{
+.bars{
     display: flex;
 }
 .vote-bar{
@@ -15,27 +15,26 @@ body{
     transition: all 200ms;
 }
 .vote-bar p{
-    color: white;
     font-weight: bold;
     font-size: 20px;
     margin: 0;
     padding: 5px;
 }
-#rep{
-    background: #E91D0E;
+.rep{
+    background: #ED1C24;
     width: 0px;
 }
-#dem{
-    background: #232066;
+.dem{
+    background: #1E90FF;
     width: 0px;
 }
-#neutral{
+.neutral{
     background: #AAAAAA;
     width: 0px;
 }
-#rep-num{
+.rep-num{
     text-align: left;
 }
-#dem-num{
+.dem-num{
     text-align: right;
 }

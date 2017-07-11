@@ -7,14 +7,21 @@ class DiceRollerControls extends Component {
     constructor(props){
         super(props);
         if (props.step){
-            this.state = {sides: 1, dice: 1, trials: 1};
+            this.state = {
+                sides: 1,
+                dice: 1,
+                trials: 1,
+                play: false
+            };
         } else {
             this.state = {
                 sides: null,
                 dice: null,
-                trials: null
+                trials: null,
+                play: false,
             };
         }
+        this.togglePlay = this.togglePlay.bind(this);
         this.changeSides = this.changeSides.bind(this);
         this.changeDice = this.changeDice.bind(this);
         this.changeTrials = this.changeTrials.bind(this);
@@ -45,6 +52,10 @@ class DiceRollerControls extends Component {
             this.handleRoll();
         }
     }
+    togglePlay(){
+        PubSub.publish('playPause');
+        this.setState({ play: !this.state.play })
+    }
     changeSides(event){
         this.setState({sides: parseInt(event.target.value,10)});
     }
@@ -65,14 +76,15 @@ class DiceRollerControls extends Component {
         return (
             <Form>
                 <Form.Group>
-                    <InputField step={this.props.step} label='# of sides' max='6' min='1' changeFunction={this.changeSides} />
+                    <InputField step={this.props.step} label='# of sides' max='12' min='1' changeFunction={this.changeSides} />
                     <InputField step={this.props.step} label='# of dice' max='3' min='1' changeFunction={this.changeDice} />
-                    <InputField step={this.props.step} label='# of trials' max='15' min='1' changeFunction={this.changeTrials} />
+                    <InputField step={this.props.step} label='# of trials' max='200' min='1' changeFunction={this.changeTrials} />
                     <div className='buttons'>
                         <Button onClick={this.handleRoll}>Roll!<br/>(Enter)</Button>
                         <Button className='wider' toggle active={this.props.step} onClick={this.props.toggle}>Enable stepping<br/>(limits inputs)</Button>
                         <div className={this.props.step ? 'buttons' : 'buttons hidden'}>
                             <Button onClick={()=>{PubSub.publish('prevState')}}>Previous<br/>Instruction</Button>
+                            <Button onClick={this.togglePlay}>{this.state.play ? 'Pause' : 'Play'}</Button>
                             <Button onClick={()=>{PubSub.publish('nextState')}}>Next<br/>Instruction</Button>
                         </div>
                     </div>

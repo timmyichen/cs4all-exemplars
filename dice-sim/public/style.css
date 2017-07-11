@@ -49,3 +49,12 @@ button.wider{
 .hidden{
     display: none;
 }
+#scroller{
+    margin-top: 50px;
+    position: relative;
+}
+#scroller p{
+    position: absolute;
+    transition: all 200ms;
+    padding: 3px;
+}

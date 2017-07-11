@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Table } from 'semantic-ui-react';
-import randomInt from '../helpers';
+import randomInt from '../helpers/helpers';
 import Pseudocode from './Pseudocode';
 import VariableTable from './VariableTable';
+import TextScroller from './TextScroller';
 import PubSub from 'pubsub-js';
 
 class DiceTable extends Component {
@@ -16,6 +17,8 @@ class DiceTable extends Component {
             barMaxSize: 0,
             instructionIndex: 0,
             dummyObj: {trial: '', randomRoll: '', total: '', instructionIndex: ''},
+            playing: false,
+            playIntervalID: null,
         };
         this.resetState = this.resetState.bind(this);
         this.generateRow = this.generateRow.bind(this);
@@ -23,6 +26,7 @@ class DiceTable extends Component {
         this.rollAllDice = this.rollAllDice.bind(this);
         this.setInitialResultState = this.setInitialResultState.bind(this);
         this.populateResultStates = this.populateResultStates.bind(this);
+        this.togglePlay = this.togglePlay.bind(this);
         this.nextState = this.nextState.bind(this);
         this.prevState = this.prevState.bind(this);
         this.addStep = this.addStep.bind(this);
@@ -34,6 +38,7 @@ class DiceTable extends Component {
         /* i know this isn't the best way to do this.  short term solution */
         PubSub.subscribe('prevState',this.prevState);
         PubSub.subscribe('nextState',this.nextState);
+        PubSub.subscribe('playPause',this.togglePlay);
     }
     componentWillUnmount(){
         window.removeEventListener('resize', this.setBarMaxSize);
@@ -154,6 +159,7 @@ class DiceTable extends Component {
             // stepNum = this.addStep(resultStates,currentState,`update percentage values`,stepNum,6);
         }
         
+        // stepNum = this.addStep(resultStates,currentState,`end`,stepNum,0);
         this.setState({resultStates});
     }
     addStep(resultStates,currentState,label,stepNum,instructionIndex){
@@ -174,11 +180,20 @@ class DiceTable extends Component {
             barMaxSize: 0,
         });
     }
+    togglePlay(){
+        this.setState({playing: !this.state.playing });
+        if (this.state.playing){
+            this.setState({ playIntervalID: setInterval(this.nextState, 1000) });
+        } else {
+            clearInterval(this.state.playIntervalID);
+        }
+    }
     nextState(){
         if(this.state.currentResultState >= this.state.resultStates.length) return;
         this.setState({
             currentResultState: this.state.currentResultState+1
         });
+        if(this.state.currentResultState >= this.state.resultStates.length) return;
         this.setState({
             results: this.state.resultStates[this.state.currentResultState].results
         });
@@ -188,6 +203,7 @@ class DiceTable extends Component {
         this.setState({
             currentResultState: this.state.currentResultState-1
         });
+        if(this.state.currentResultState <= 0) return;
         this.setState({
             results: this.state.resultStates[this.state.currentResultState].results
         });
@@ -229,9 +245,6 @@ class DiceTable extends Component {
                             .map((result) => this.generateRow(result))}
                     </Table.Body>
                 </Table>
-                {this.state.resultStates.map((result,index) =>
-                    (<p key={result.stepNum} style={{fontWeight: this.state.currentResultState-1 === index ? 'bold' : ''}} >{result.stepLabel}</p>)
-                )}
             </div>
             <div id='info-right'>
                 <VariableTable
@@ -242,6 +255,11 @@ class DiceTable extends Component {
                 <Pseudocode 
                     resultState={this.state.resultStates[this.state.currentResultState-1] || ''}
                     step={this.props.step}
+                />
+                <TextScroller
+                    step={this.props.step}
+                    data={this.state.resultStates.map((result) =>result.stepLabel)}
+                    index={this.state.currentResultState}
                 />
             </div>
             </div>
