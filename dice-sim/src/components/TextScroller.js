@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { List } from 'semantic-ui-react';
-import { arraysEqual } from '../helpers/helpers';
+// import { List } from 'semantic-ui-react';
+// import { arraysEqual } from '../helpers/helpers';
 
 class TextScroller extends Component {
     constructor(props){
@@ -33,9 +33,8 @@ class TextScroller extends Component {
     generateItem(item,i){
         const style = {
             top: 25*i - (25*this.props.index),
-            // opacity: i <= this.props.index+1 && i >= this.props.index-1 ? 1 : 0,
             opacity: this.getOpacity(i,this.props.index),
-            border: i == this.props.index && item != '' ? '1px solid black' : 'none',
+            border: i === this.props.index && item !== '' ? '1px solid black' : 'none',
             display: Math.abs(this.props.index-i) <= 1 ? 'block' : 'none'
         };
         return (

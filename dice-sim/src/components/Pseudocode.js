@@ -7,7 +7,7 @@ class Pseudocode extends Component {
         this.getClass = this.getClass.bind(this);
     }
     getClass(index){
-        return this.props.resultState.instructionIndex === index ? 'highlight' : '';
+        return this.props.resultStep.instructionIndex === index ? 'highlight' : '';
     }
     render(){
         return (
