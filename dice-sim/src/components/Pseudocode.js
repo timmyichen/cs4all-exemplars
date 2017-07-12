@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { List } from 'semantic-ui-react';
 
 class Pseudocode extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.getClass = this.getClass.bind(this);
     }
-    getClass(index){
+    getClass(index) {
         return this.props.resultStep.instructionIndex === index ? 'highlight' : '';
     }
-    render(){
+    render() {
         return (
             <div className={this.props.step ? '' : 'hidden'}>
-                <p className='highlight'>Highlighted text indicates the step that was <em>just</em> completed</p>
+                <p className="highlight">Highlighted text indicates the step that was <em>just</em> completed</p>
                 <List bulleted>
                     <List.Item className={this.getClass(1)}>Set initial values for each roll result to zero</List.Item>
                     <List.Item>Repeat the following steps for each trial:<List.List>
@@ -28,5 +29,10 @@ class Pseudocode extends Component {
         );
     }
 }
+
+Pseudocode.propTypes = {
+    step: PropTypes.bool,
+    resultStep: PropTypes.object,
+};
 
 export default Pseudocode;

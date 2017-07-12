@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Form, Button } from 'semantic-ui-react';
 import InputField from './InputField';
 import PubSub from 'pubsub-js';
 
 class DiceRollerControls extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        if (props.step){
+        if (props.step) {
             this.state = {
                 sides: 1,
                 dice: 1,
                 trials: 1,
-                play: false
+                play: false,
             };
         } else {
             this.state = {
@@ -28,64 +29,82 @@ class DiceRollerControls extends Component {
         this.handleRoll = this.handleRoll.bind(this);
         this.handleKeypress = this.handleKeypress.bind(this);
     }
-    componentWillReceiveProps(nextProps){
-        if (nextProps.step !== this.props.step){
-            if (nextProps.step){
-                this.setState({sides: 1, dice: 1, trials: 1});
+    componentWillMount() {
+        window.addEventListener('keypress', this.handleKeypress);
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.step !== this.props.step) {
+            if (nextProps.step) {
+                this.setState({ sides: 1, dice: 1, trials: 1 });
             } else {
                 this.setState({
                     sides: null,
                     dice: null,
-                    trials: null
+                    trials: null,
                 });
             }
         }
     }
-    componentWillMount(){
-        window.addEventListener('keypress',this.handleKeypress);
+    componentWillUnmount() {
+        window.removeEventListener('keypress', this.handleKeypress);
     }
-    componentWillUnmount(){
-        window.removeEventListener('keypress',this.handleKeypress);
-    }
-    handleKeypress(e){
-        if (e.keyCode === 13){
+    handleKeypress(e) {
+        if (e.keyCode === 13) {
             this.handleRoll();
         }
     }
-    togglePlay(){
+    togglePlay() {
         PubSub.publish('playPause');
-        this.setState({ play: !this.state.play })
+        this.setState({ play: !this.state.play });
     }
-    changeSides(event){
-        this.setState({sides: parseInt(event.target.value,10)});
+    changeSides(event) {
+        this.setState({ sides: parseInt(event.target.value, 10) });
     }
-    changeDice(event){
-        this.setState({dice: parseInt(event.target.value,10)});
+    changeDice(event) {
+        this.setState({ dice: parseInt(event.target.value, 10) });
     }
-    changeTrials(event){
-        this.setState({trials: parseInt(event.target.value,10)});
+    changeTrials(event) {
+        this.setState({ trials: parseInt(event.target.value, 10) });
     }
-    handleRoll(){
-        if((!this.state.sides || !this.state.dice || !this.state.trials) && !this.props.step){
-            alert("At least one field is blank or zero, please try again");
+    handleRoll() {
+        if ((!this.state.sides || !this.state.dice || !this.state.trials) && !this.props.step) {
+            alert('At least one field is blank or zero, please try again');
             return;
         }
         this.props.submit(this.state);
     }
-    render(){
+    render() {
         return (
             <Form>
                 <Form.Group>
-                    <InputField step={this.props.step} label='# of sides' max='12' min='1' changeFunction={this.changeSides} />
-                    <InputField step={this.props.step} label='# of dice' max='3' min='1' changeFunction={this.changeDice} />
-                    <InputField step={this.props.step} label='# of trials' max='200' min='1' changeFunction={this.changeTrials} />
-                    <div className='buttons'>
-                        <Button onClick={this.handleRoll}>Roll!<br/>(Enter)</Button>
-                        <Button className='wider' toggle active={this.props.step} onClick={this.props.toggle}>Enable stepping<br/>(limits inputs)</Button>
+                    <InputField
+                        step={this.props.step}
+                        label="# of sides"
+                        max={12}
+                        min={1}
+                        changeFunction={this.changeSides}
+                    />
+                    <InputField
+                        step={this.props.step}
+                        label="# of dice"
+                        max={3}
+                        min={1}
+                        changeFunction={this.changeDice}
+                    />
+                    <InputField
+                        step={this.props.step}
+                        label="# of trials"
+                        max={99}
+                        min={1}
+                        changeFunction={this.changeTrials}
+                    />
+                    <div className="buttons">
+                        <Button onClick={this.handleRoll}>Roll!<br />(Enter) </Button>
+                        <Button className="wider" toggle active={this.props.step} onClick={this.props.toggle}>Enable stepping<br />(limits inputs)</Button>
                         <div className={this.props.step ? 'buttons' : 'buttons hidden'}>
-                            <Button onClick={()=>{PubSub.publish('prevState')}}>Previous<br/>Instruction</Button>
-                            <Button onClick={this.togglePlay}>{this.state.play ? 'Pause' : 'Play'}</Button>
-                            <Button onClick={()=>{PubSub.publish('nextState')}}>Next<br/>Instruction</Button>
+                            <Button onClick={() => { PubSub.publish('prevState'); }}>Previous<br />Instruction</Button>
+                            <Button onClick={this.togglePlay}>{ this.state.play ? 'Pause' : 'Play' }</Button>
+                            <Button onClick={() => { PubSub.publish('nextState'); }}>Next<br />Instruction</Button>
                         </div>
                     </div>
                 </Form.Group>
@@ -93,5 +112,11 @@ class DiceRollerControls extends Component {
         );
     }
 }
+
+DiceRollerControls.propTypes = {
+    step: PropTypes.bool,
+    submit: PropTypes.func,
+    toggle: PropTypes.func,
+};
 
 export default DiceRollerControls;
