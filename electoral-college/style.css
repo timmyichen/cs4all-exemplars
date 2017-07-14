@@ -1,10 +1,11 @@
 body{
-    background: #D3D3D3;
+    background: #DCDCDC;
 }
 
 #map{
-    height: 500px;
-    width: 700px;
+    margin: 25px 0;
+    width: 1076px;
+    height: 550px;
     position: relative;
 }
 .bars{
@@ -13,6 +14,8 @@ body{
 .vote-bar{
     height: 30px;
     transition: all 200ms;
+    border-style:solid;
+    border-width:thin;
 }
 .vote-bar p{
     font-weight: bold;
@@ -37,4 +40,31 @@ body{
 }
 .dem-num{
     text-align: right;
+}
+
+#sliders {
+    height: 700px;
+    width: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #D62929;
 }
