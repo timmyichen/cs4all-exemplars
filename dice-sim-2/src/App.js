@@ -22,11 +22,14 @@ class App extends Component {
             },
             isPlaying: false,
             playIntervalId: null,
+            playRate: 1000,
         };
         this.changeValue = this.changeValue.bind(this);
         this.roll = this.roll.bind(this);
         this.toggleStep = this.toggleStep.bind(this);
         this.togglePlay = this.togglePlay.bind(this);
+        this.changeRate = this.changeRate.bind(this);
+        this.setRate = this.setRate.bind(this);
         this.nextStep = this.nextStep.bind(this);
         this.prevStep = this.prevStep.bind(this);
     }
@@ -58,11 +61,24 @@ class App extends Component {
     togglePlay() {
         const isPlaying = !this.state.isPlaying;
         if (isPlaying) {
-            this.setState({ playIntervalId: setInterval(this.nextStep, 1000) });
+            this.setState({
+                playIntervalId: setInterval(this.nextStep, this.state.playRate),
+            });
         } else {
             clearInterval(this.state.playIntervalId);
         }
         this.setState({ isPlaying });
+    }
+    changeRate(event) {
+        this.setState({ playRate: event.target.value*1000 });
+    }
+    setRate(event) {
+        if(this.state.isPlaying) {
+            clearInterval(this.state.playIntervalId);
+            this.setState({
+                playIntervalId: setInterval(this.nextStep, this.state.playRate),
+            });
+        }
     }
     nextStep() {
         const status = this.state.steppedResults;
@@ -109,6 +125,9 @@ class App extends Component {
                         prevStep={this.prevStep}
                         isPlaying={this.state.isPlaying}
                         togglePlay={this.togglePlay}
+                        playRate={this.state.playRate}
+                        changeRate={this.changeRate}
+                        setRate={this.setRate}
                     />
                 </div>
             </div>

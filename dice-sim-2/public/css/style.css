@@ -85,11 +85,14 @@ p {
   margin-top: 14px;
 }
 #step-components #step-controls {
+  text-align: center;
+}
+#step-components #step-controls #step-buttons {
   display: flex;
   align-items: flex-start;
   justify-content: center;
 }
-#step-components #step-controls button {
+#step-components #step-controls #step-buttons button {
   width: 130px;
   height: 55px;
   line-height: 18px;

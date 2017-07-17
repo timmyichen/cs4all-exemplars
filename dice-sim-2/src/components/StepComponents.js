@@ -35,6 +35,9 @@ class StepComponents extends Component {
                         prevStep={this.props.prevStep}
                         togglePlay={this.props.togglePlay}
                         isPlaying={this.props.isPlaying}
+                        playRate={this.props.playRate}
+                        changeRate={this.props.changeRate}
+                        setRate={this.props.setRate}
                     />
                     <Pseudocode
                         currentIndex={this.props.currentStep.instructionIndex}
