@@ -1,0 +1,79 @@
+body {
+  padding: 20px !important;
+}
+h1 {
+  text-align: center;
+}
+p {
+  margin: 0;
+}
+#main-container {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #000;
+  padding: 10px;
+}
+#roll-components {
+  width: 49%;
+}
+#roll-components form {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 60px;
+}
+#roll-components form #inputs {
+  display: flex;
+  justify-content: space-between;
+}
+#roll-components form #inputs div:first-of-type {
+  padding-right: 30px;
+}
+#roll-components form #inputs div:last-of-type {
+  padding: 0 30px;
+}
+#roll-components form #inputs .input-container div {
+  padding: 0;
+}
+#roll-components form button {
+  width: 100px;
+  height: 50px;
+}
+#roll-components #result-table .table-text {
+  width: 5%;
+}
+#roll-components #result-table .bar div {
+  border: 2px solid #000;
+  margin-top: 10px;
+  height: 20px;
+  background: #87ceeb;
+  transition: all 400ms;
+  width: 0px;
+}
+#step-components {
+  width: 49%;
+}
+#step-components #step-heading {
+  display: flex;
+  height: 60px;
+  align-items: flex-end;
+}
+#step-components #step-heading p {
+  flex: 1;
+button
+  width: 100px;
+  height: 50px;
+}
+#step-components #step-heading p.intro {
+  flex: 4;
+}
+#step-components #step-controls {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+#step-components #step-controls button {
+  width: 130px;
+  height: 55px;
+  line-height: 18px;
+}

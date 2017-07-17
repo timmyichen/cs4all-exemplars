@@ -1,0 +1,84 @@
+body
+    padding 20px !important
+
+h1
+    text-align center
+p
+    margin 0
+
+.highlight
+    background yellow
+    transition all 200ms
+
+.hidden
+    display none
+
+#main-container
+    display flex
+    justify-content space-between
+    border 1px solid black
+    padding 10px
+    max-width 1400px
+    margin 0 auto
+
+#roll-components
+    width 49%
+    form
+        display flex
+        align-items flex-end
+        justify-content space-between
+        height 60px
+        #inputs
+            display flex
+            justify-content space-between
+            div:first-of-type
+                padding-right 30px
+            div:last-of-type
+                padding 0 30px
+            .input-container div
+                padding 0
+        button
+            width 100px
+            height 50px
+    #result-table
+        .table-text
+            width: 5%
+        .bar div
+            border 2px solid black
+            margin-top 10px
+            height 20px
+            background skyblue
+            transition all 400ms
+            width 0px
+
+#step-components
+    width 49%
+    d
+    #step-heading
+        display flex
+        height 60px
+        align-items flex-end
+        p
+            flex 1
+            button
+                width 100px
+                height 50px
+            &.intro
+                flex 4
+    
+    #variable-table
+        margin-top 14px
+    
+    #step-controls
+        display flex
+        align-items flex-start
+        justify-content center
+        button
+            width 130px
+            height 55px
+            line-height 18px
+    
+    #pseudocode
+        margin-top 20px
+        p
+            display: inline
