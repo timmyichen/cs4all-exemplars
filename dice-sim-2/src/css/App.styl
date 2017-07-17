@@ -7,7 +7,7 @@ p
     margin 0
 
 .highlight
-    background yellow
+    background yellow !important
     transition all 200ms
 
 .hidden
@@ -83,4 +83,12 @@ p
     #pseudocode
         margin-top 20px
         p
-            display: inline
+            display inline
+    
+    #pythoncode
+        div pre
+            margin 0 !important
+            code
+                padding 0 !important
+        .highlight pre code
+            background yellow !important

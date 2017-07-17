@@ -8,7 +8,7 @@ p {
   margin: 0;
 }
 .highlight {
-  background: #ff0;
+  background: #ff0 !important;
   transition: all 200ms;
 }
 .hidden {
@@ -102,4 +102,13 @@ p {
 }
 #step-components #pseudocode p {
   display: inline;
+}
+#step-components #pythoncode div pre {
+  margin: 0 !important;
+}
+#step-components #pythoncode div pre code {
+  padding: 0 !important;
+}
+#step-components #pythoncode .highlight pre code {
+  background: #ff0 !important;
 }

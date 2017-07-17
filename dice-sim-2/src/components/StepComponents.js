@@ -5,6 +5,7 @@ import { Button } from 'semantic-ui-react'
 import StepControls from './StepControls';
 import VariableTable from './VariableTable';
 import Pseudocode from './Pseudocode';
+import PythonCode from './PythonCode';
 
 import { isEmptyObject } from '../helpers/helpers';
 
@@ -40,6 +41,9 @@ class StepComponents extends Component {
                         setRate={this.props.setRate}
                     />
                     <Pseudocode
+                        currentIndex={this.props.currentStep.instructionIndex}
+                    />
+                    <PythonCode
                         currentIndex={this.props.currentStep.instructionIndex}
                     />
                 </div>
