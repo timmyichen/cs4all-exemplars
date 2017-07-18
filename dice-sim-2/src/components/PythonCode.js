@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Popup, Header, Icon } from 'semantic-ui-react';
 // import Highlight from 'react-highlight.js';
 
 import PythonCodeLine from './PythonCodeLine';
@@ -23,6 +24,21 @@ class PythonCode extends Component {
     render() {
         return (
             <div id="pythoncode">
+                <Header as="h2">
+                    The Code (Python3)
+                    <Popup
+                        className="weird-adjustment"
+                        hoverable
+                        header="Computer-Runnable Code"
+                        trigger={<Icon name='question circle' size='small' />}
+                        content={<p>Computers can run through the algorithm much faster than
+                        humans can.  The code supplied below is actual Python3 code that 
+                        will calculate the probability of the dice rolls.  Python3 is a 
+                        powerful scripting language used in a variety of ways.  You can
+                        write and run Python3 code online at&nbsp;
+                        <a href='https://repl.it/languages/python3'>repl.it</a></p>}
+                    />
+                </Header>
                 { this.state.codeLines.map(line => (
                     <PythonCodeLine
                         key={`code-${line.lineNumber}`}

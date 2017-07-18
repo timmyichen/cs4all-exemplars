@@ -21,10 +21,13 @@ class StepComponents extends Component {
                             active={this.props.stepMode}
                         >Step
                         <Popup
+                            hoverable
                             trigger={<Icon name='question circle' size='large' />}
+                            header="Enter Stepping Mode"
                             content="How does a computer (this website) do all these calculations?
                                 Click on the 'Step' button to show, step-by-step, how everything
-                                works behind the scenes."
+                                works behind the scenes.  However, while in stepping mode,
+                                trials are limited to 99 for performance reasons."
                             position="right center"
                         / >
                         </Button>

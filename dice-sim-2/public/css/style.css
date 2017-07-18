@@ -4,12 +4,9 @@ body {
 h1 {
   text-align: center;
 }
-p {
-  margin: 0;
-}
 .highlight {
   background: #ff0 !important;
-  transition: all 200ms;
+  transition: all 150ms;
 }
 .hidden {
   display: none;
@@ -99,11 +96,17 @@ p {
   height: 55px;
   line-height: 18px;
 }
+#step-components div h2 i {
+  font-size: 1em;
+}
 #step-components #pseudocode {
   margin-top: 20px;
 }
 #step-components #pseudocode p {
   display: inline;
+}
+#step-components #pythoncode {
+  margin-top: 20px;
 }
 #step-components #pythoncode div pre {
   margin: 0 !important;
@@ -113,4 +116,7 @@ p {
 }
 #step-components #pythoncode .highlight pre code {
   background: #ff0 !important;
+}
+.weird-adjustment p {
+  margin-top: 7px;
 }

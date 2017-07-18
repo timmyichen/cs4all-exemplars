@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { List } from 'semantic-ui-react';
+import { List, Header, Icon, Popup } from 'semantic-ui-react';
 
 class Pseudocode extends Component {
     getClass(index) {
@@ -9,6 +9,19 @@ class Pseudocode extends Component {
     render() {
         return (
             <div id="pseudocode">
+                <Header as="h2">
+                    The Algorithm
+                    <Popup
+                        hoverable
+                        header="What is an Algorithm?"
+                        trigger={<Icon name='question circle' size='small' />}
+                        content={`An algorithm is a series of steps to take in order to achieve
+                        a goal.  In this case, the goal is to roll a bunch of virtual
+                        dice in a simulation and calculate the probability of each result.  
+                        These steps can be performed by both human and computer, although
+                        a computer can do it much faster.`}
+                    />
+                </Header>
                 <p className="highlight">Highlighted text indicates the step that was <em>just</em> completed</p>
                 <List bulleted>
                     <List.Item className={this.getClass(0)}>Set initial values for each roll result to zero</List.Item>

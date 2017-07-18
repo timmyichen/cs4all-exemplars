@@ -45,6 +45,7 @@ class ResultTable extends Component {
                                     
                                     {header.label !== '' ?
                                         (<Popup
+                                            hoverable
                                             header={header.label}
                                             trigger={<Icon name='question circle' size='large' />}
                                             content={header.helpText}

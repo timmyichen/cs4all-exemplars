@@ -32,7 +32,7 @@ class StepControls extends Component {
                 <div id="step-rate">
                     <input
                         type="range"
-                        min="0.2"
+                        min="0.4"
                         max="4"
                         step="0.1"
                         value={this.props.playRate/1000}

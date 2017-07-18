@@ -7,6 +7,10 @@ class PythonCodeLine extends Component {
         super(props);
         this.getClass = this.getClass.bind(this);
     }
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.blockIndex === -1) return false;
+        return true;
+    }
     getClass() {
         if (this.props.blockIndex === -1) return;
         return this.props.currentIndex === this.props.blockIndex ? 'highlight' : '';
