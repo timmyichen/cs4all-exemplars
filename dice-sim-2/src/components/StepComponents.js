@@ -52,6 +52,9 @@ class StepComponents extends Component {
                     />
                     <Pseudocode
                         currentIndex={this.props.currentStep.instructionIndex}
+                        trials={this.props.trials}
+                        sides={this.props.sides}
+                        dice={this.props.dice}
                     />
                     <PythonCode
                         currentIndex={this.props.currentStep.instructionIndex}

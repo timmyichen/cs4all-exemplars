@@ -21,9 +21,14 @@ function isEmptyObject(obj) {
   return Object.keys(obj).length === 0;
 }
 
+function getBlankIfNaN(input) {
+  return isNaN(input) ? '[empty]' : input;
+}
+
 
 module.exports = {
   randomInt,
   arraysEqual,
   isEmptyObject,
+  getBlankIfNaN,
 };

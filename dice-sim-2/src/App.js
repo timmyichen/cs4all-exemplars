@@ -115,6 +115,9 @@ class App extends Component {
                         results={this.state.results}
                     />
                     <StepComponents
+                        sides={this.state.sides}
+                        dice={this.state.dice}
+                        trials={this.state.trials}
                         results={this.state.results}
                         stepMode={this.state.stepMode}
                         currentStep={this.state.steppedResults.resultSteps[this.state.steppedResults.currentStepIndex]
