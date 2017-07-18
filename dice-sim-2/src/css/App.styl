@@ -13,6 +13,10 @@ p
 .hidden
     display none
 
+.center
+    text-align center
+    display inline-block
+
 #main-container
     display flex
     justify-content space-between
@@ -44,16 +48,15 @@ p
         .table-text
             width: 5%
         .bar div
-            border 2px solid black
-            margin-top 10px
-            height 20px
+            border 1px solid black
+            height 10px
             background skyblue
             transition all 400ms
             width 0px
 
 #step-components
     width 49%
-    d
+    
     #step-heading
         display flex
         height 60px
@@ -63,8 +66,11 @@ p
             button
                 width 100px
                 height 50px
-            &.intro
-                flex 4
+                position relative
+                i       
+                    position absolute
+                    top 2px
+                    right -7px
     
     #variable-table
         margin-top 14px

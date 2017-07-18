@@ -14,6 +14,10 @@ p {
 .hidden {
   display: none;
 }
+.center {
+  text-align: center;
+  display: inline-block;
+}
 #main-container {
   display: flex;
   justify-content: space-between;
@@ -52,9 +56,8 @@ p {
   width: 5%;
 }
 #roll-components #result-table .bar div {
-  border: 2px solid #000;
-  margin-top: 10px;
-  height: 20px;
+  border: 1px solid #000;
+  height: 10px;
   background: #87ceeb;
   transition: all 400ms;
   width: 0px;
@@ -62,24 +65,23 @@ p {
 #step-components {
   width: 49%;
 }
-#step-components d,
 #step-components #step-heading {
   display: flex;
   height: 60px;
   align-items: flex-end;
 }
-#step-components d p,
 #step-components #step-heading p {
   flex: 1;
 }
-#step-components d p button,
 #step-components #step-heading p button {
   width: 100px;
   height: 50px;
+  position: relative;
 }
-#step-components d p.intro,
-#step-components #step-heading p.intro {
-  flex: 4;
+#step-components #step-heading p button i {
+  position: absolute;
+  top: 2px;
+  right: -7px;
 }
 #step-components #variable-table {
   margin-top: 14px;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'semantic-ui-react'
+import { Button, Popup, Icon } from 'semantic-ui-react'
 
 import StepControls from './StepControls';
 import VariableTable from './VariableTable';
@@ -19,9 +19,16 @@ class StepComponents extends Component {
                             toggle
                             onClick={this.props.toggleStep}
                             active={this.props.stepMode}
-                        >Step</Button>
+                        >Step
+                        <Popup
+                            trigger={<Icon name='question circle' size='large' />}
+                            content="How does a computer (this website) do all these calculations?
+                                Click on the 'Step' button to show, step-by-step, how everything
+                                works behind the scenes."
+                            position="right center"
+                        / >
+                        </Button>
                     </p>
-                    <p className="intro">intro</p>
                 </div>
                 
                 <div className={this.props.stepMode ? '' : 'hidden'}>

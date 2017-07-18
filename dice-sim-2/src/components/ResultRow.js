@@ -8,8 +8,8 @@ function ResultRow(props) {
             <Table.Cell>{props.die}</Table.Cell>
             <Table.Cell>{props.frequency}</Table.Cell>
             <Table.Cell>{props.percentage.toFixed(4)}</Table.Cell>
-            <Table.Cell>{(props.percentage * 100).toFixed(2)}%</Table.Cell>
             <Table.Cell className="bar">
+                {(props.percentage * 100).toFixed(2)}%
                 <div style={{ width: `${props.percentage*100}%` }} />
             </Table.Cell>
         </Table.Row>
