@@ -40,6 +40,7 @@ class StepComponents extends Component {
                     />
                     <StepControls
                         stepMode={this.props.stepMode && this.props.isStepping}
+                        goToStep={this.props.goToStep}
                         nextStep={this.props.nextStep}
                         prevStep={this.props.prevStep}
                         togglePlay={this.props.togglePlay}
@@ -47,6 +48,7 @@ class StepComponents extends Component {
                         playRate={this.props.playRate}
                         changeRate={this.props.changeRate}
                         setRate={this.props.setRate}
+                        lastStepIndex={this.props.lastStepIndex}
                     />
                     <Pseudocode
                         currentIndex={this.props.currentStep.instructionIndex}

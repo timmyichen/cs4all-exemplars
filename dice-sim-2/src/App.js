@@ -32,6 +32,7 @@ class App extends Component {
         this.togglePlay = this.togglePlay.bind(this);
         this.changeRate = this.changeRate.bind(this);
         this.setRate = this.setRate.bind(this);
+        this.goToStep = this.goToStep.bind(this);
         this.nextStep = this.nextStep.bind(this);
         this.prevStep = this.prevStep.bind(this);
     }
@@ -96,6 +97,14 @@ class App extends Component {
             });
         }
     }
+    goToStep(index) {
+        const steppedResults = this.state.steppedResults;
+        steppedResults.currentStepIndex = index;
+        this.setState({
+            steppedResults,
+            results: steppedResults.resultSteps[index].results,
+        });
+    }
     nextStep() {
         const status = this.state.steppedResults;
         if (status.currentStepIndex >= status.resultSteps.length - 1) return;
@@ -144,6 +153,8 @@ class App extends Component {
                             || this.state.steppedResults.resultSteps[this.state.steppedResults.length-1]
                         }
                         toggleStep={this.toggleStep}
+                        lastStepIndex={this.state.steppedResults.resultSteps.length - 1}
+                        goToStep={this.goToStep}
                         nextStep={this.nextStep}
                         prevStep={this.prevStep}
                         isPlaying={this.state.isPlaying}
