@@ -9,8 +9,15 @@ class StepControls extends Component {
                 <div id="step-buttons">
                     <Button
                         disabled={!this.props.stepMode}
+                        content="First"
+                        icon="double angle left"
+                        labelPosition="left"
+                        onClick={() => {this.props.goToStep(0)}}
+                    />
+                    <Button
+                        disabled={!this.props.stepMode}
                         content="Previous"
-                        icon="left arrow"
+                        icon="angle left"
                         labelPosition="left"
                         onClick={this.props.prevStep}
                     />
@@ -24,9 +31,16 @@ class StepControls extends Component {
                     <Button
                         disabled={!this.props.stepMode}
                         content="Next"
-                        icon="right arrow"
+                        icon="angle right"
                         labelPosition="right"
                         onClick={this.props.nextStep}
+                    />
+                    <Button
+                        disabled={!this.props.stepMode}
+                        content="Last"
+                        icon="double angle right"
+                        labelPosition="right"
+                        onClick={() => {this.props.goToStep(this.props.lastStepIndex)}}
                     />
                 </div>
                 <div id="step-rate">

@@ -7,8 +7,6 @@ import VariableTable from './VariableTable';
 import Pseudocode from './Pseudocode';
 import PythonCode from './PythonCode';
 
-import { isEmptyObject } from '../helpers/helpers';
-
 class StepComponents extends Component {
     render() {
         return (
@@ -41,7 +39,7 @@ class StepComponents extends Component {
                         randomRoll={this.props.currentStep.randomRoll.toString()}
                     />
                     <StepControls
-                        stepMode={this.props.stepMode && !isEmptyObject(this.props.results)}
+                        stepMode={this.props.stepMode && this.props.isStepping}
                         nextStep={this.props.nextStep}
                         prevStep={this.props.prevStep}
                         togglePlay={this.props.togglePlay}

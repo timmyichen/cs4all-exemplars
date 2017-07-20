@@ -39,6 +39,7 @@ class InputFields extends Component {
                         value={field.value}
                         limit={field.limit}
                         changeFunction={this.props.changeFunction}
+                        isStepping={this.props.isStepping}
                     />
                 ))}
             </div>

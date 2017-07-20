@@ -24,6 +24,7 @@ class InputField extends Component {
                     placeholder={this.props.placeholder}
                     value={this.props.value}
                     onChange={this.changeValue.bind(this)}
+                    disabled={this.props.isStepping}
                 />
             </div>
         );

@@ -6,13 +6,30 @@ import InputFields from './InputFields';
 import ResultTable from './ResultTable';
 
 class RollComponents extends Component {
-    // handleClick() {
-    //     if (this.props.stepMode) {
-    //         this.props.stepFunction();
-    //     } else {
-    //         this.props.rollFunction();
-    //     }
-    // }
+    constructor(props) {
+        super(props);
+        this.state = { active: false };
+        this.handleClick = this.handleClick.bind(this);
+        this.determineButtonText = this.determineButtonText.bind(this);
+    }
+    determineButtonText() {
+        if (!this.props.stepMode) {
+            return 'Roll';
+        } else {
+            if (!this.props.isStepping) {
+                return 'Begin Stepping';
+            } else {
+                return 'Stop Stepping';
+            }
+        }
+    }
+    handleClick() {
+        if (this.props.stepMode) {
+            this.props.toggleStepBegin();
+            this.setState( prevState => !prevState.active );
+        }
+        this.props.rollFunction();
+    }
     render() {
         return (
             <div id='roll-components'>
@@ -23,10 +40,15 @@ class RollComponents extends Component {
                         trials={this.props.trials}
                         stepMode={this.props.stepMode}
                         changeFunction={this.props.changeFunction}
+                        isStepping={this.props.isStepping}
                     />
                     <div>
-                        <Button onClick={this.props.rollFunction}>
-                            {this.props.stepMode ? 'Being Stepping' : 'Roll'}
+                        <Button
+                            onClick={this.handleClick}
+                            toggle={this.props.isStepping}
+                            active={this.state.buttonActive}
+                        >
+                            {this.determineButtonText()}
                         </Button>
                     </div>
                 </Form>

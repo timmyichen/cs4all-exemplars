@@ -15,6 +15,7 @@ class App extends Component {
             dice: 2,
             trials: 10,
             stepMode: false,
+            isStepping: false,
             results: {},
             steppedResults: {
                 currentStepIndex: 0,
@@ -25,6 +26,7 @@ class App extends Component {
             playRate: 1000,
         };
         this.changeValue = this.changeValue.bind(this);
+        this.toggleStepBegin = this.toggleStepBegin.bind(this);
         this.roll = this.roll.bind(this);
         this.toggleStep = this.toggleStep.bind(this);
         this.togglePlay = this.togglePlay.bind(this);
@@ -47,6 +49,20 @@ class App extends Component {
     }
     toggleStep() {
         this.setState(prevState => ({ stepMode: !prevState.stepMode, results: {} }));
+    }
+    toggleStepBegin() {
+        let isStepping = !this.state.isStepping;
+        
+        if(!isStepping) {
+            clearInterval(this.state.playIntervalId);
+            this.setState({
+                isStepping,
+                isPlaying: false,
+                steppedResults: { currentStepIndex: 0 }
+            });
+        } else {
+            this.setState({ isStepping, })
+        }
     }
     roll() {
         if (!this.state.stepMode) {
@@ -103,7 +119,9 @@ class App extends Component {
     render() {
         return (
             <div>
-                <Header as="h1">Dice Roll Simulator</Header>
+                <header>
+                    <Header as="h1">Dice Roll Simulator</Header>
+                </header>
                 <div id='main-container'>
                     <RollComponents
                         sides={this.state.sides}
@@ -113,6 +131,8 @@ class App extends Component {
                         changeFunction={this.changeValue}
                         rollFunction={this.roll}
                         results={this.state.results}
+                        isStepping={this.state.isStepping}
+                        toggleStepBegin={this.toggleStepBegin}
                     />
                     <StepComponents
                         sides={this.state.sides}
@@ -131,6 +151,7 @@ class App extends Component {
                         playRate={this.state.playRate}
                         changeRate={this.changeRate}
                         setRate={this.setRate}
+                        isStepping={this.state.isStepping}
                     />
                 </div>
             </div>
