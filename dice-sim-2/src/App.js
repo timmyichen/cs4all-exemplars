@@ -11,6 +11,7 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
+            runTime: -1,
             sides: 6,
             dice: 2,
             trials: 10,
@@ -49,7 +50,7 @@ class App extends Component {
         this.setState(newState);
     }
     toggleStep() {
-        this.setState(prevState => ({ stepMode: !prevState.stepMode, results: {} }));
+        this.setState(prevState => ({ stepMode: !prevState.stepMode, results: {}, runTime: -1 }));
     }
     toggleStepBegin() {
         let isStepping = !this.state.isStepping;
@@ -67,8 +68,13 @@ class App extends Component {
     }
     roll() {
         if (!this.state.stepMode) {
+            const now = Date.now();
             const results = rollAllDice(this.state.sides, this.state.dice, this.state.trials);
-            this.setState({ results });
+            const runTime = (Date.now() - now);
+            if (runTime > 5000) {
+                alert("Took longer than 5 seconds to execute, ending process..");
+            }
+            this.setState({ results, runTime });
         } else {
             const steppedResults = rollSteppedDice(this.state.sides, this.state.dice, this.state.trials);
             const results = steppedResults.resultSteps[0].results;
@@ -142,6 +148,7 @@ class App extends Component {
                         results={this.state.results}
                         isStepping={this.state.isStepping}
                         toggleStepBegin={this.toggleStepBegin}
+                        runTime={this.state.runTime}
                     />
                     <StepComponents
                         sides={this.state.sides}

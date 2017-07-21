@@ -11,6 +11,7 @@ class RollComponents extends Component {
         this.state = { active: false };
         this.handleClick = this.handleClick.bind(this);
         this.determineButtonText = this.determineButtonText.bind(this);
+        this.getRunTimeString = this.getRunTimeString.bind(this);
     }
     determineButtonText() {
         if (!this.props.stepMode) {
@@ -29,6 +30,19 @@ class RollComponents extends Component {
             this.setState( prevState => !prevState.active );
         }
         this.props.rollFunction();
+    }
+    getRunTimeString() {
+        let value = '';
+        if (this.props.runTime < 0 || this.props.runTime > 5000) {
+            value = 'N/A';
+        } else {
+            value = (this.props.runTime/1000).toFixed(3);
+            if (this.props.runTime === 0) {
+                value = `less than ${value}`;
+            }
+        }
+        
+        return `Process completed in ${value} seconds`;
     }
     render() {
         return (
@@ -55,6 +69,7 @@ class RollComponents extends Component {
                 <ResultTable
                     results={this.props.results}
                 />
+                <p className={this.props.stepMode ? 'hidden' : ''}>{this.getRunTimeString()}</p>
             </div>
         );
     }

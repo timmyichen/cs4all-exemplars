@@ -13,7 +13,6 @@ function rollAllDice(sides, dice, trials) {
             total += randomInt(1, sides);
         }
         if (Date.now() - now > 5000) {
-            alert("Took longer than 5 seconds to execute, ending process..");
             return {};
         }
         
