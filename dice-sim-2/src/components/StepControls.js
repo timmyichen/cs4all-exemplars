@@ -12,7 +12,7 @@ class StepControls extends Component {
                         content="First"
                         icon="double angle left"
                         labelPosition="left"
-                        onClick={() => {this.props.goToStep(0)}}
+                        onClick={() => { this.props.goToStep(0); }}
                     />
                     <Button
                         disabled={!this.props.stepMode}
@@ -40,7 +40,7 @@ class StepControls extends Component {
                         content="Last"
                         icon="double angle right"
                         labelPosition="right"
-                        onClick={() => {this.props.goToStep(this.props.lastStepIndex)}}
+                        onClick={() => { this.props.goToStep(this.props.lastStepIndex); }}
                     />
                 </div>
                 <div id="step-rate">
@@ -49,12 +49,12 @@ class StepControls extends Component {
                         min="0.4"
                         max="4"
                         step="0.1"
-                        value={this.props.playRate/1000}
+                        value={this.props.playRate / 1000}
                         onChange={this.props.changeRate}
                         onMouseUp={this.props.setRate}
                     />
                     <br />
-                    <p>Rate: {this.props.playRate/1000}s</p>
+                    <p>Rate: {this.props.playRate / 1000}s</p>
                 </div>
             </div>
         );
@@ -62,11 +62,16 @@ class StepControls extends Component {
 }
 
 StepControls.propTypes = {
-    stepMode: PropTypes.bool,
-    nextStep: PropTypes.func,
-    prevStep: PropTypes.func,
-    togglePlay: PropTypes.func,
-    isPlaying: PropTypes.bool,
+    lastStepIndex: PropTypes.number.isRequired,
+    stepMode: PropTypes.bool.isRequired,
+    goToStep: PropTypes.func.isRequired,
+    nextStep: PropTypes.func.isRequired,
+    prevStep: PropTypes.func.isRequired,
+    togglePlay: PropTypes.func.isRequired,
+    isPlaying: PropTypes.bool.isRequired,
+    playRate: PropTypes.number.isRequired,
+    setRate: PropTypes.func.isRequired,
+    changeRate: PropTypes.func.isRequired,
 };
 
 export default StepControls;

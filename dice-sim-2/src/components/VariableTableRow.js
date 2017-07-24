@@ -13,7 +13,7 @@ class VariableTableRow extends Component {
             this.setState({ highlight: true });
             setTimeout(() => {
                 this.setState({ highlight: false });
-            },350);
+            }, 350);
         }
     }
     render() {
@@ -28,9 +28,9 @@ class VariableTableRow extends Component {
 }
 
 VariableTableRow.propTypes = {
-    varName: PropTypes.string,
-    desc: PropTypes.string,
-    value: PropTypes.string,
+    varName: PropTypes.string.isRequired,
+    desc: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
 };
 
 export default VariableTableRow;

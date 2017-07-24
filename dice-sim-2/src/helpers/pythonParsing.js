@@ -2,7 +2,7 @@ const axios = require('axios');
 
 function parsePythonCode(path) {
     return new Promise((resolve, reject) => {
-        axios.get(path).then(response => {
+        axios.get(path).then((response) => {
             const lines = response.data.split('\n');
             // console.log(lines);
             
@@ -23,21 +23,18 @@ function parsePythonCode(path) {
                         // lineText: lines[i].replace(/ /g,'&nbsp;'),
                         lineText: lines[i] || ' ',
                         blockIndex,
-                    })
+                    });
                 }
             }
             
             resolve(lineData);
         })
-        .catch(reason => {
-            reject('error in parsing python code\n' + reason);
+        .catch((reason) => {
+            reject(`error in parsing python code\n${reason}`);
         });
-    
-    
     });
-  
 }
 
 module.exports = {
     parsePythonCode,
-}
+};

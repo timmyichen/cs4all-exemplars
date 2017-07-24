@@ -10,16 +10,16 @@ function ResultRow(props) {
             <Table.Cell>{props.percentage.toFixed(4)}</Table.Cell>
             <Table.Cell className="bar">
                 {(props.percentage * 100).toFixed(2)}%
-                <div style={{ width: `${props.percentage*100}%` }} />
+                <div style={{ width: `${props.percentage * 100}%` }} />
             </Table.Cell>
         </Table.Row>
     );
 }
 
 ResultRow.propTypes = {
-    die: PropTypes.number,
-    frequency: PropTypes.number,
-    percentage: PropTypes.number,
+    die: PropTypes.number.isRequired,
+    frequency: PropTypes.number.isRequired,
+    percentage: PropTypes.number.isRequired,
 };
 
 export default ResultRow;

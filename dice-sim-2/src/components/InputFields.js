@@ -48,11 +48,12 @@ class InputFields extends Component {
 }
 
 InputFields.propTypes = {
-    sides: PropTypes.number,
-    dice: PropTypes.number,
-    trials: PropTypes.number,
-    stepMode: PropTypes.bool,
-    changeFunction: PropTypes.func,
+    isStepping: PropTypes.bool.isRequired,
+    sides: PropTypes.number.isRequired,
+    dice: PropTypes.number.isRequired,
+    trials: PropTypes.number.isRequired,
+    stepMode: PropTypes.bool.isRequired,
+    changeFunction: PropTypes.func.isRequired,
 };
 
 export default InputFields;

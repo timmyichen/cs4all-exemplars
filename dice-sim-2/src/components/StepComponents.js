@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Popup, Icon } from 'semantic-ui-react'
+import { Button, Popup, Icon } from 'semantic-ui-react';
 
 import StepControls from './StepControls';
 import VariableTable from './VariableTable';
@@ -20,20 +20,21 @@ class StepComponents extends Component {
                         >Step
                         <Popup
                             hoverable
-                            trigger={<Icon name='question circle' size='large' />}
+                            trigger={<Icon name="question circle" size="large" />}
                             header="Enter Stepping Mode"
                             content="How does a computer (this website) do all these calculations?
                                 Click on the 'Step' button to show, step-by-step, how everything
                                 works behind the scenes.  However, while in stepping mode,
                                 trials are limited to 99 for performance reasons."
                             position="right center"
-                        / >
+                        />
                         </Button>
                     </p>
                 </div>
                 
                 <div className={this.props.stepMode ? '' : 'hidden'}>
                     <VariableTable
+                        trials={this.props.trials}
                         trial={this.props.currentStep.trial.toString()}
                         total={this.props.currentStep.total.toString()}
                         randomRoll={this.props.currentStep.randomRoll.toString()}
@@ -51,6 +52,7 @@ class StepComponents extends Component {
                         lastStepIndex={this.props.lastStepIndex}
                     />
                     <Pseudocode
+                        generic={false}
                         currentIndex={this.props.currentStep.instructionIndex}
                         trials={this.props.trials}
                         sides={this.props.sides}
@@ -66,14 +68,22 @@ class StepComponents extends Component {
 }
 
 StepComponents.propTypes = {
-    results: PropTypes.object,
-    stepMode: PropTypes.bool,
-    currentStep: PropTypes.object,
-    toggleStep: PropTypes.func,
-    nextStep: PropTypes.func,
-    prevStep: PropTypes.func,
-    isPlaying: PropTypes.bool,
-    togglePlay: PropTypes.func,
+    isStepping: PropTypes.bool.isRequired,
+    goToStep: PropTypes.func.isRequired,
+    playRate: PropTypes.number.isRequired,
+    changeRate: PropTypes.func.isRequired,
+    setRate: PropTypes.func.isRequired,
+    lastStepIndex: PropTypes.number.isRequired,
+    trials: PropTypes.number.isRequired,
+    sides: PropTypes.number.isRequired,
+    dice: PropTypes.number.isRequired,
+    stepMode: PropTypes.bool.isRequired,
+    currentStep: PropTypes.object.isRequired,
+    toggleStep: PropTypes.func.isRequired,
+    nextStep: PropTypes.func.isRequired,
+    prevStep: PropTypes.func.isRequired,
+    isPlaying: PropTypes.bool.isRequired,
+    togglePlay: PropTypes.func.isRequired,
 };
 
 export default StepComponents;

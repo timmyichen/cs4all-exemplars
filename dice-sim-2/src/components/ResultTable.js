@@ -31,23 +31,23 @@ const headerColumns = [
         
 class ResultTable extends Component {
     render() {
-        
         return (
             <Table celled id="result-table">
                 <Table.Header>
                     <Table.Row>
-                        {headerColumns.map((header,index) => (
+                        {headerColumns.map((header, index) => (
                             <Table.HeaderCell
                                 key={`resTable-${index}`}
-                                className={header.label !== 'Percentage' ? 'table-text' : ''}>
-                                <span className='center'>
+                                className={header.label !== 'Percentage' ? 'table-text' : ''}
+                            >
+                                <span className="center">
                                     {header.label}<br />
                                     
                                     {header.label !== '' ?
                                         (<Popup
                                             hoverable
                                             header={header.label}
-                                            trigger={<Icon name='question circle' size='large' />}
+                                            trigger={<Icon name="question circle" size="large" />}
                                             content={header.helpText}
                                         />) : ''}
                                     
@@ -74,7 +74,7 @@ class ResultTable extends Component {
 }
 
 ResultTable.propTypes = {
-    results: PropTypes.object,
+    results: PropTypes.object.isRequired,
 };
 
 export default ResultTable;

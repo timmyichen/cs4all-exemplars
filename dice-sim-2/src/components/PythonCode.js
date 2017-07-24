@@ -11,9 +11,9 @@ class PythonCode extends Component {
     constructor(props) {
         super(props);
         
-        parsePythonCode('./py/dice_roll.py').then(data => {
+        parsePythonCode('./py/dice_roll.py').then((data) => {
             this.state = { codeLines: data };
-        })
+        });
         this.state = { codeLines: [] };
         
         this.getClass = this.getClass.bind(this);
@@ -30,13 +30,13 @@ class PythonCode extends Component {
                         className="weird-adjustment"
                         hoverable
                         header="Computer-Runnable Code"
-                        trigger={<Icon name='question circle' size='small' />}
+                        trigger={<Icon name="question circle" size="small" />}
                         content={<p>Computers can run through the algorithm much faster than
                         humans can.  The code supplied below is actual Python3 code that 
                         will calculate the probability of the dice rolls.  Python3 is a 
                         powerful scripting language used in a variety of ways.  You can
                         write and run Python3 code online at&nbsp;
-                        <a href='https://repl.it/languages/python3'>repl.it</a></p>}
+                        <a href="https://repl.it/languages/python3">repl.it</a></p>}
                     />
                 </Header>
                 { this.state.codeLines.map(line => (

@@ -14,20 +14,14 @@ class RollComponents extends Component {
         this.getRunTimeString = this.getRunTimeString.bind(this);
     }
     determineButtonText() {
-        if (!this.props.stepMode) {
-            return 'Roll';
-        } else {
-            if (!this.props.isStepping) {
-                return 'Begin Stepping';
-            } else {
-                return 'Stop Stepping';
-            }
-        }
+        if (!this.props.stepMode) return 'Roll';
+        if (!this.props.isStepping) return 'Begin Stepping';
+        return 'Stop Stepping';
     }
     handleClick() {
         if (this.props.stepMode) {
             this.props.toggleStepBegin();
-            this.setState( prevState => !prevState.active );
+            this.setState(prevState => !prevState.active);
         }
         this.props.rollFunction();
     }
@@ -36,7 +30,7 @@ class RollComponents extends Component {
         if (this.props.runTime < 0 || this.props.runTime > 5000) {
             value = 'N/A';
         } else {
-            value = (this.props.runTime/1000).toFixed(3);
+            value = (this.props.runTime / 1000).toFixed(3);
             if (this.props.runTime === 0) {
                 value = `less than ${value}`;
             }
@@ -46,7 +40,7 @@ class RollComponents extends Component {
     }
     render() {
         return (
-            <div id='roll-components'>
+            <div id="roll-components">
                 <Form>
                     <InputFields
                         sides={this.props.sides}
@@ -76,13 +70,16 @@ class RollComponents extends Component {
 }
 
 RollComponents.propTypes = {
-    sides: PropTypes.number,
-    dice: PropTypes.number,
-    trials: PropTypes.number,
-    stepMode: PropTypes.bool,
-    changeFunction: PropTypes.func,
-    rollFunction: PropTypes.func,
-    results: PropTypes.object,
+    toggleStepBegin: PropTypes.func.isRequired,
+    runTime: PropTypes.number.isRequired,
+    isStepping: PropTypes.bool.isRequired,
+    sides: PropTypes.number.isRequired,
+    dice: PropTypes.number.isRequired,
+    trials: PropTypes.number.isRequired,
+    stepMode: PropTypes.bool.isRequired,
+    changeFunction: PropTypes.func.isRequired,
+    rollFunction: PropTypes.func.isRequired,
+    results: PropTypes.object.isRequired,
 };
 
 export default RollComponents;

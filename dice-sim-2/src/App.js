@@ -20,7 +20,7 @@ class App extends Component {
             results: {},
             steppedResults: {
                 currentStepIndex: 0,
-                resultSteps: [{ total: 'N/A', trial: 'N/A', randomRoll: 'N/A', }],
+                resultSteps: [{ total: 'N/A', trial: 'N/A', randomRoll: 'N/A' }],
             },
             isPlaying: false,
             playIntervalId: null,
@@ -53,17 +53,17 @@ class App extends Component {
         this.setState(prevState => ({ stepMode: !prevState.stepMode, results: {}, runTime: -1 }));
     }
     toggleStepBegin() {
-        let isStepping = !this.state.isStepping;
+        const isStepping = !this.state.isStepping;
         
-        if(!isStepping) {
+        if (!isStepping) {
             clearInterval(this.state.playIntervalId);
             this.setState({
                 isStepping,
                 isPlaying: false,
-                steppedResults: { currentStepIndex: 0 }
+                steppedResults: { currentStepIndex: 0 },
             });
         } else {
-            this.setState({ isStepping, })
+            this.setState({ isStepping });
         }
     }
     roll() {
@@ -72,13 +72,13 @@ class App extends Component {
             const results = rollAllDice(this.state.sides, this.state.dice, this.state.trials);
             const runTime = (Date.now() - now);
             if (runTime > 5000) {
-                alert("Took longer than 5 seconds to execute, ending process..");
+                alert('Took longer than 5 seconds to execute, ending process..');
             }
             this.setState({ results, runTime });
         } else {
             const steppedResults = rollSteppedDice(this.state.sides, this.state.dice, this.state.trials);
             const results = steppedResults.resultSteps[0].results;
-            this.setState({ steppedResults, results, });
+            this.setState({ steppedResults, results });
         }
     }
     togglePlay() {
@@ -93,10 +93,10 @@ class App extends Component {
         this.setState({ isPlaying });
     }
     changeRate(event) {
-        this.setState({ playRate: event.target.value*1000 });
+        this.setState({ playRate: event.target.value * 1000 });
     }
-    setRate(event) {
-        if(this.state.isPlaying) {
+    setRate() {
+        if (this.state.isPlaying) {
             clearInterval(this.state.playIntervalId);
             this.setState({
                 playIntervalId: setInterval(this.nextStep, this.state.playRate),
@@ -116,20 +116,20 @@ class App extends Component {
         if (status.currentStepIndex >= status.resultSteps.length - 1) return;
         
         status.currentStepIndex++;
-        this.setState({ steppedResults: status, });
+        this.setState({ steppedResults: status });
         
         if (status.currentStepIndex >= status.resultSteps.length - 1) return;
-        this.setState({ results: status.resultSteps[status.currentStepIndex].results, });
+        this.setState({ results: status.resultSteps[status.currentStepIndex].results });
     }
     prevStep() {
         const status = this.state.steppedResults;
         if (status.currentStepIndex <= 0) return;
         
         status.currentStepIndex--;
-        this.setState({ steppedResults: status, });
+        this.setState({ steppedResults: status });
         
         if (status.currentStepIndex <= 0) return;
-        this.setState({ results: status.resultSteps[status.currentStepIndex].results, });
+        this.setState({ results: status.resultSteps[status.currentStepIndex].results });
     }
     render() {
         return (
@@ -137,7 +137,7 @@ class App extends Component {
                 <header>
                     <Header as="h1">Dice Roll Simulator</Header>
                 </header>
-                <div id='main-container'>
+                <div id="main-container">
                     <RollComponents
                         sides={this.state.sides}
                         dice={this.state.dice}
@@ -157,7 +157,7 @@ class App extends Component {
                         results={this.state.results}
                         stepMode={this.state.stepMode}
                         currentStep={this.state.steppedResults.resultSteps[this.state.steppedResults.currentStepIndex]
-                            || this.state.steppedResults.resultSteps[this.state.steppedResults.length-1]
+                            || this.state.steppedResults.resultSteps[this.state.steppedResults.length - 1]
                         }
                         toggleStep={this.toggleStep}
                         lastStepIndex={this.state.steppedResults.resultSteps.length - 1}

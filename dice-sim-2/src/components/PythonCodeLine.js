@@ -12,15 +12,13 @@ class PythonCodeLine extends Component {
         return true;
     }
     getClass() {
-        if (this.props.blockIndex === -1) return;
+        if (this.props.blockIndex === -1) return '';
         return this.props.currentIndex === this.props.blockIndex ? 'highlight' : '';
     }
     render() {
         return (
             <div className={this.getClass()}>
-            <Highlight language="python"
-                
-            >
+            <Highlight language="python">
                 {this.props.lineText}
             </Highlight>
                 </div>
@@ -29,6 +27,8 @@ class PythonCodeLine extends Component {
 }
 
 PythonCodeLine.propTypes = {
+    blockIndex: PropTypes.number.isRequired,
+    lineText: PropTypes.string.isRequired,
     currentIndex: PropTypes.number,
 };
 

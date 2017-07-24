@@ -37,7 +37,7 @@ class Pseudocode extends Component {
                         <List.Item className={this.getClass(4)}>Add 1 to the frequency count for the roll result of our total</List.Item>
                     </List.List></List.Item>
                 </List>
-            )
+            );
         }
         
         return (
@@ -47,7 +47,7 @@ class Pseudocode extends Component {
                     <Popup
                         hoverable
                         header="What is an Algorithm?"
-                        trigger={<Icon name='question circle' size='small' />}
+                        trigger={<Icon name="question circle" size="small" />}
                         content={<span>An algorithm is a series of steps to take in order to achieve
                         a goal.  In this case, the goal is to roll a bunch of virtual
                         dice in a simulation and calculate the probability of each result.  
@@ -65,9 +65,10 @@ class Pseudocode extends Component {
 }
 
 Pseudocode.propTypes = {
-    trials: PropTypes.number,
-    sides: PropTypes.number,
-    dice: PropTypes.number,
+    generic: PropTypes.bool.isRequired,
+    trials: PropTypes.number.isRequired,
+    sides: PropTypes.number.isRequired,
+    dice: PropTypes.number.isRequired,
     currentIndex: PropTypes.number,
 };
 

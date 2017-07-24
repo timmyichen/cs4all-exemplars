@@ -24,13 +24,13 @@ class VariableTable extends Component {
                 desc: 'Our total amount rolle dfor the current trial',
                 value: this.props.total,
             },    
-        ]
+        ];
         
         return (
             <Table celled id="variable-table">
                 <Table.Header>
                     <Table.Row>
-                        {headerColumns.map((label,index) => (
+                        {headerColumns.map((label, index) => (
                             <Table.HeaderCell key={`varTable-${index}`}>{label}</Table.HeaderCell>
                         ))}
                     </Table.Row>
@@ -51,9 +51,10 @@ class VariableTable extends Component {
 }
 
 VariableTable.propTypes = {
-    trial: PropTypes.string,
-    total: PropTypes.string,
-    randomRoll: PropTypes.string,
+    trials: PropTypes.number.isRequired,
+    trial: PropTypes.string.isRequired,
+    total: PropTypes.string.isRequired,
+    randomRoll: PropTypes.string.isRequired,
 };
 
 export default VariableTable;
