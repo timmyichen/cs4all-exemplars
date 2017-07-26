@@ -1,0 +1,18 @@
+body {
+  padding: 20px !important;
+}
+.hidden {
+  display: none;
+}
+#cloud-elements {
+  display: flex;
+  justify-content: space-around;
+}
+#cloud-elements #cloud-controls {
+  min-width: 500px;
+}
+#cloud-elements #cloud-output {
+  border: 2px solid #808080;
+  width: 100%;
+  height: 500px;
+}

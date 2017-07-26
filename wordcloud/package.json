@@ -3,11 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.16.2",
+    "d3": "^4.10.0",
     "d3-cloud": "^1.2.4",
+    "d3-scale": "^1.0.6",
+    "en-stemmer": "^1.0.3",
+    "node-snowball": "^0.2.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-scripts": "1.0.10",
-    "semantic-ui-react": "^0.71.2"
+    "semantic-ui-react": "^0.71.2",
+    "stemmer": "^1.0.1"
   },
   "scripts": {
     "stylus": "stylus -w ./src/css/App.styl -o ./public/css/style.css",
