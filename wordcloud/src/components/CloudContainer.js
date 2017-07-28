@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import cloud from 'd3-cloud';
+import d3tip from 'd3-tip';
 
+import { Loader, Dimmer } from 'semantic-ui-react';
 import CloudControls from './CloudControls';
 
 import { prepareText, prepareStopWords, removeStopWords } from '../helpers/helpers';
@@ -10,21 +12,23 @@ import { prepareText, prepareStopWords, removeStopWords } from '../helpers/helpe
 class CloudContainer extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            words: [],
-        };
         
         this.makeCloud = this.makeCloud.bind(this);
         this.draw = this.draw.bind(this);
         
-        this.state = { cloud: null };
+        this.state = { 
+            cloud: null,
+            words: [],
+            loading: false,
+        };
         
         this.renderCloud = this.renderCloud.bind(this);
         
     }
     makeCloud(wordData) {
         return cloud()
-            .size([this.refs.cloudOutRef.offsetWidth, 500])
+            .size([this.refs.cloudOutRef.offsetWidth-4, 500])
+            // -4px to account for the border (2px on each side)
             .words(wordData)
             .padding(5)
             .rotate(function() { return ~~(Math.random() * 2) * 90; })
@@ -33,30 +37,41 @@ class CloudContainer extends Component {
             .on("end", this.draw);
     }
     renderCloud() {
-        const wordData = prepareText(this.props.text);
+        this.setState({loading: true}, () => {
+            const wordData = prepareText(this.props.text);
+            
+            const stopWords = prepareStopWords(this.props.stopWords);
+            const cloudData = removeStopWords(wordData, stopWords);
+            
+            const values = cloudData.map(data => data.size);
+            const scale = d3.scaleLinear()
+                .domain([Math.min(...values), Math.max(...values)])
+                .range([25,125]);
+            
+            // wordData = wordData.map((data) => { data.size = scale(data.size); });
+            cloudData.forEach((data) => {
+                data.frequency = data.size;
+                data.size = scale(data.size);
+            });
+            
+            // console.table(cloudData);
+            
+            this.setState({
+                cloud: this.makeCloud(cloudData),
+                loading: false,
+            },
+            () => { this.state.cloud.start() });
+        })
         
-        const stopWords = prepareStopWords(this.props.stopWords);
-        const cloudData = removeStopWords(wordData, stopWords);
-        
-        const values = cloudData.map(data => data.size);
-        const scale = d3.scaleLinear()
-            .domain([Math.min(...values), Math.max(...values)])
-            .range([25,150]);
-        
-        // wordData = wordData.map((data) => { data.size = scale(data.size); });
-        cloudData.forEach((data) => {
-            data.frequency = data.size;
-            data.size = scale(data.size);
-        });
-        
-        // console.table(cloudData);
-        
-        this.setState({
-            cloud: this.makeCloud(cloudData)
-        },
-        () => {this.state.cloud.start()});
     }
     draw(words) {
+        const tip = d3tip()
+            .attr('class', 'd3-tip')
+            .offset([-5, 0])
+            .html(function(d) {
+            return "<strong>Frequency:</strong> <span style='color:red'>" + d.frequency + "</span>";
+            })
+        
         const layout = this.state.cloud;
         const fill = d3.schemeCategory20;
         d3.select('svg').remove();
@@ -76,7 +91,10 @@ class CloudContainer extends Component {
             .attr("transform", function(d) {
                 return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
             })
-            .text(function(d) { return d.text; });
+            .text(function(d) { return d.text; })
+            .call(tip)
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide);
     }
     render() {
         return (
@@ -88,7 +106,13 @@ class CloudContainer extends Component {
                     changeStopWords={this.props.changeStopWords}
                     renderCloud={this.renderCloud}
                 />
-                <div id="cloud-output" ref="cloudOutRef"></div>
+                
+                <div id="cloud-output" ref="cloudOutRef" className="dimmable">
+                    <Dimmer inverted active={this.state.loading}>
+                        <Loader inverted>Generating Word Cloud</Loader>
+                    </Dimmer>
+                </div>
+                
             </div>
         );
     }

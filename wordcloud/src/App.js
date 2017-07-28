@@ -6,12 +6,14 @@ import CsContainer from './components/CsContainer';
 import { getStopWords } from './helpers/helpers';
 import { Header } from 'semantic-ui-react';
 
+const defaultText = `This is a bunch of text you should probably change. Change it to whatever you want!  Or run it to see what happens.  The world is your oyster.  Or maybe just this web app.  Repeated words words words words words words will appear as larger text text text.`
+
 class App extends Component {
     componentDidMount
     constructor(props) {
         super(props);
         this.state = {
-            cloudText: '',
+            cloudText: defaultText,
             stopWords: '',
             tabIndex: 0,
         };

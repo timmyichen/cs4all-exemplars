@@ -1,4 +1,4 @@
-var axios = require('axios');
+const axios = require('axios');
 
 function getStopWords() {
     return new Promise((resolve, reject) => {
@@ -12,12 +12,12 @@ function getStopWords() {
 }
 
 function prepareText(string) {
-    let words = string.replace(/\n/g, ' ').split(/[\s\/]+/g);
+    let words = string.replace(/\n/g, ' ').split(/[\s/]+/g);
     
     //check for and remove symbols
     const new_words = [];
     words.forEach((word) => {
-        const word_split = word.split(/[.,'";:]+/g);
+        const word_split = word.split(/[.,'";:!?]+/g);
         if (word_split[word_split.length-1].length <= 2) {
             word_split.splice(-1);
             new_words.push(word_split.join(''));
@@ -27,19 +27,20 @@ function prepareText(string) {
     });
     words = new_words;
     
-    console.table(words);
-    
     // remove only numbers and empty spaces
-    words = words.filter((word) => !(word.search(/^[0-9]*$/g) === 0 || word === '') );
+    words = words.filter((word) => word === '' || !(word.search(/^[0-9]*$/g) === 0) );
     
     const count = {};
     words.forEach((word) => {
+        if (word.replace(/[^A-Z]/g, '').length < 2) word = word.toLowerCase();
+
         if (word in count) {
             count[word]++;
         } else {
             count[word] = 1;
         }
     });
+    
     const final = [];
     const wordKeys = Object.keys(count);
     for (let word in wordKeys) {
@@ -65,3 +66,8 @@ module.exports = {
     prepareStopWords,
     removeStopWords,
 }
+
+//need to:
+// - fix spaces with nbsp
+// - replace words with highlighted spans (JSX)
+// - determine whether to be case insensitive or not
